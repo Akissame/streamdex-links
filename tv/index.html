@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StreamDex</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #0A0A0F;
+      color: #F0F0F5;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .card {
+      text-align: center;
+      padding: 40px 32px;
+      max-width: 380px;
+      width: 100%;
+    }
+    .logo {
+      font-size: 32px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+    .logo span { color: #6C63FF; }
+    .subtitle {
+      color: #8E8EA0;
+      font-size: 15px;
+      margin-bottom: 40px;
+    }
+    .btn {
+      display: inline-block;
+      background: #6C63FF;
+      color: white;
+      text-decoration: none;
+      padding: 14px 32px;
+      border-radius: 100px;
+      font-weight: 700;
+      font-size: 15px;
+      margin: 8px;
+      transition: opacity 0.2s;
+    }
+    .btn:hover { opacity: 0.85; }
+    .btn.secondary {
+      background: transparent;
+      border: 1px solid #2A2A38;
+      color: #8E8EA0;
+    }
+    .open-app {
+      font-size: 14px;
+      color: #4A4A5E;
+      margin-top: 32px;
+    }
+  </style>
+  <script>
+    // Intentar abrir la app al cargar
+    window.addEventListener('load', function() {
+      const path = window.location.pathname;
+      const deepLink = 'streamdex:/' + path;
+      
+      // Intentar abrir la app
+      window.location.href = deepLink;
+      
+      // Si después de 2s sigue aquí, mostrar opciones de descarga
+      setTimeout(function() {
+        document.getElementById('download-section').style.display = 'block';
+      }, 2000);
+    });
+  </script>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">Stream<span>Dex</span></div>
+    <p class="subtitle">Tu índice personal del mundo del streaming</p>
+    
+    <div id="download-section" style="display:none">
+      <p style="color:#8E8EA0; margin-bottom:24px; font-size:14px;">
+        Descarga StreamDex para ver este contenido
+      </p>
+      <a href="https://play.google.com/store/apps/details?id=com.akissame.streamdex" 
+         class="btn">
+        Google Play
+      </a>
+      <a href="https://apps.apple.com/app/streamdex/idXXXXXXXX" 
+         class="btn">
+        App Store
+      </a>
+    </div>
+    
+    <p class="open-app">
+      ¿Ya tienes la app? 
+      <a href="javascript:void(0)" 
+         onclick="window.location.href='streamdex:/'+window.location.pathname"
+         style="color:#6C63FF; text-decoration:none;">
+        Abrir en StreamDex
+      </a>
+    </p>
+  </div>
+</body>
+</html>

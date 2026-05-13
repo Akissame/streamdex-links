@@ -4,7 +4,8 @@
     "namespace": "android_app",
     "package_name": "com.akissame.streamdex",
     "sha256_cert_fingerprints": [
-      "2F:23:8B:16:E7:B0:2C:1A:04:9F:95:E7:36:FB:95:8D:9C:04:07:3E:C4:62:81:32:BD:F1:64:05:F5:9E:ED:22"
+      "2F:23:8B:16:E7:B0:2C:1A:04:9F:95:E7:36:FB:95:8D:9C:04:07:3E:C4:62:81:32:BD:F1:64:05:F5:9E:ED:22",
+      "A9:69:95:D9:68:06:E3:C7:89:A2:AB:C9:CA:5F:20:43:8A:6D:21:BD:7C:15:3D:AE:3F:8F:DC:7B:04:AC:06:1F"
     ]
   }
 }]

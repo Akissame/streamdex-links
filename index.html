@@ -1,6 +1,25 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+  <script>
+  // Recuperar y limpiar el path guardado por 404.html
+  (function() {
+    const redirectUrl = sessionStorage.getItem('sdx_redirect');
+    if (!redirectUrl) return;
+    sessionStorage.removeItem('sdx_redirect');
+
+    const url = new URL(redirectUrl);
+    const path = url.pathname; // ej: /movie/1083381
+
+    // Intentar abrir la app con deep link
+    window.location.href = 'streamdex:/' + path;
+
+    // Si después de 2s sigue en el navegador → mostrar descarga
+    setTimeout(function() {
+      document.getElementById('download-section').style.display = 'block';
+    }, 2000);
+  })();
+</script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>StreamDex — Tu índice del streaming</title>

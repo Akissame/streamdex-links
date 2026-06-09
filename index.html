@@ -1,357 +1,1026 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>StreamDex — Tu índice del streaming</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap');
+  <meta property="og:title" content="StreamDex — Tu índice del streaming">
+  <meta property="og:description" content="Registra, descubre y colecciona películas y series. Gratis para siempre.">
+  <meta property="og:image" content="https://streamdex.akissame.com.co/og-image.png">
+  <meta property="og:url" content="https://streamdex.akissame.com.co">
 
-  .sdx-root {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    background: #0A0A0F;
-    color: #F0F0F5;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
+  <script>
+    (function() {
+      var r = sessionStorage.getItem('sdx_redirect');
+      if (!r) return;
+      sessionStorage.removeItem('sdx_redirect');
+      var path = new URL(r).pathname;
+      window.location.href = 'streamdex:/' + path;
+      setTimeout(function() {
+        var el = document.getElementById('cta-download');
+        if (el) el.style.display = 'flex';
+      }, 2000);
+    })();
+  </script>
 
-  .sdx-root * { box-sizing: border-box; margin: 0; padding: 0; }
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 
-  .sdx-noise {
-    position: fixed; inset: 0; pointer-events: none; z-index: 0;
-    background-image: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(108,99,255,0.18) 0%, transparent 70%),
-                      radial-gradient(ellipse 40% 40% at 80% 80%, rgba(108,99,255,0.08) 0%, transparent 60%);
-  }
+    :root {
+      --primary:       #6C63FF;
+      --primary-dark:  #534AB7;
+      --primary-light: #9C8FFF;
+      --accent:        #FF6B6B;
+      --accent-gold:   #FFB830;
+      --success:       #4CAF82;
+      --pending:       #4A9EFF;
+      --bg:            #0A0A0F;
+      --surface:       #13131A;
+      --surface-el:    #1C1C26;
+      --border:        rgba(255,255,255,0.07);
+      --border-accent: rgba(108,99,255,0.4);
+      --text:          #F0F0F5;
+      --text-sub:      #B0B0C0;
+      --text-muted:    #5A5A72;
+    }
 
-  .sdx-wrap { position: relative; z-index: 1; max-width: 480px; margin: 0 auto; padding: 0 24px 80px; }
+    html { scroll-behavior: smooth; }
 
-  .sdx-nav {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 28px 0 0;
-  }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
 
-  .sdx-logo-text { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; }
-  .sdx-logo-text span { color: #6C63FF; }
+    /* ── Background layers ─────────────────────── */
+    .bg-layer {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 80% 50% at 50% -5%, rgba(108,99,255,0.2) 0%, transparent 65%),
+        radial-gradient(ellipse 50% 40% at 85% 70%, rgba(255,107,107,0.06) 0%, transparent 55%),
+        radial-gradient(ellipse 60% 50% at 10% 60%, rgba(108,99,255,0.05) 0%, transparent 60%);
+    }
 
-  .sdx-badge {
-    background: rgba(108,99,255,0.14);
-    border: 1px solid rgba(108,99,255,0.35);
-    border-radius: 100px;
-    padding: 4px 12px;
-    font-size: 11px;
-    font-weight: 700;
-    color: #9C8FFF;
-    letter-spacing: 0.4px;
-  }
+    .bg-grid {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(108,99,255,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(108,99,255,0.05) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 80% 70% at 50% 30%, black 20%, transparent 100%);
+    }
 
-  .sdx-hero { text-align: center; padding: 56px 0 48px; }
+    .bg-stars { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+    .star {
+      position: absolute; border-radius: 50%; background: #fff;
+      animation: twinkle var(--d, 3s) ease-in-out infinite alternate;
+    }
+    @keyframes twinkle { from { opacity:0.15; } to { opacity:0.85; } }
 
-  .sdx-hero-eyebrow {
-    display: inline-flex; align-items: center; gap: 6px;
-    background: rgba(108,99,255,0.1);
-    border: 1px solid rgba(108,99,255,0.25);
-    border-radius: 100px;
-    padding: 5px 14px;
-    font-size: 12px; font-weight: 600; color: #9C8FFF;
-    margin-bottom: 24px;
-  }
+    .container { max-width: 1120px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 10; }
+    section { position: relative; z-index: 10; }
 
-  .sdx-hero-eyebrow-dot {
-    width: 6px; height: 6px; border-radius: 50%;
-    background: #6C63FF;
-    animation: pulse 2s infinite;
-  }
+    /* ── Nav ──────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 16px 24px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(10,10,15,0.8);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      transition: background 0.3s;
+    }
+    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .nav-logo-name { font-size: 20px; font-weight: 900; color: var(--text); letter-spacing: -0.5px; }
+    .nav-logo-name span { color: var(--primary); }
+    .nav-links { display: flex; gap: 6px; align-items: center; }
+    .nav-link {
+      padding: 8px 16px; border-radius: 20px;
+      text-decoration: none; font-size: 14px; font-weight: 500;
+      color: var(--text-sub); transition: all 0.2s; border: 1px solid transparent;
+    }
+    .nav-link:hover { color: var(--text); background: rgba(255,255,255,0.05); }
+    .nav-link.cta {
+      background: var(--primary); color: #fff; font-weight: 700;
+    }
+    .nav-link.cta:hover { background: var(--primary-dark); transform: translateY(-1px); }
 
-  @keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.5; transform: scale(0.8); }
-  }
+    /* ── Hero ──────────────────────────────────── */
+    .hero { min-height: 100vh; display: flex; align-items: center; padding: 100px 0 60px; }
+    .hero-inner {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 60px; align-items: center;
+    }
 
-  .sdx-hero h1 {
-    font-size: 42px; font-weight: 900; line-height: 1.08;
-    letter-spacing: -1.5px; margin-bottom: 20px;
-  }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 14px; border-radius: 20px;
+      background: rgba(108,99,255,0.12); border: 1px solid rgba(108,99,255,0.3);
+      font-size: 12px; font-weight: 700; color: var(--primary-light);
+      letter-spacing: 0.3px; margin-bottom: 24px;
+    }
+    .hero-eyebrow .dot {
+      width: 6px; height: 6px; border-radius: 50%; background: var(--primary);
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot { 0%,100%{transform:scale(1);opacity:1;} 50%{transform:scale(1.5);opacity:0.6;} }
 
-  .sdx-hero h1 .accent { color: #6C63FF; }
+    .hero-title {
+      font-size: clamp(38px, 5vw, 58px); font-weight: 900;
+      line-height: 1.07; letter-spacing: -2px; margin-bottom: 20px;
+    }
+    .hero-title .accent { color: var(--primary); }
 
-  .sdx-hero p {
-    font-size: 16px; color: #8A8AA3; line-height: 1.65;
-    margin-bottom: 40px; max-width: 320px; margin-left: auto; margin-right: auto;
-  }
+    .hero-subtitle {
+      font-size: 17px; line-height: 1.7; color: var(--text-sub);
+      margin-bottom: 36px; max-width: 460px;
+    }
 
-  .sdx-cta-group { display: flex; flex-direction: column; gap: 12px; align-items: center; }
+    .hero-cta { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 40px; }
 
-  .sdx-btn-primary {
-    display: flex; align-items: center; justify-content: center; gap: 10px;
-    background: #6C63FF; color: #fff;
-    text-decoration: none;
-    padding: 15px 32px; border-radius: 100px;
-    font-weight: 700; font-size: 15px;
-    width: 100%; max-width: 300px;
-    transition: opacity 0.15s;
-  }
-  .sdx-btn-primary:hover { opacity: 0.88; }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 15px 28px; border-radius: 14px;
+      background: var(--primary); color: #fff;
+      text-decoration: none; font-size: 15px; font-weight: 700;
+      border: none; cursor: pointer; transition: all 0.25s;
+      box-shadow: 0 4px 24px rgba(108,99,255,0.35);
+    }
+    .btn-primary:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(108,99,255,0.45); }
 
-  .sdx-btn-secondary {
-    display: flex; align-items: center; justify-content: center; gap: 10px;
-    background: transparent;
-    border: 1px solid #2A2A38; color: #8A8AA3;
-    text-decoration: none;
-    padding: 15px 32px; border-radius: 100px;
-    font-weight: 600; font-size: 15px;
-    width: 100%; max-width: 300px;
-    transition: border-color 0.15s, color 0.15s;
-  }
-  .sdx-btn-secondary:hover { border-color: #6C63FF; color: #9C8FFF; }
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 15px 28px; border-radius: 14px;
+      background: transparent; color: var(--text);
+      text-decoration: none; font-size: 15px; font-weight: 600;
+      border: 1px solid var(--border); cursor: pointer; transition: all 0.25s;
+    }
+    .btn-secondary:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.15); }
 
-  .sdx-btn-icon { width: 20px; height: 20px; flex-shrink: 0; }
+    .hero-trust { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+    .trust-item { display: flex; align-items: center; gap: 7px; font-size: 13px; color: var(--text-muted); }
+    .trust-item i { color: var(--success); font-size: 11px; }
 
-  .sdx-divider {
-    display: flex; align-items: center; gap: 12px; margin: 48px 0 36px;
-  }
-  .sdx-divider-line { flex: 1; height: 1px; background: #1C1C26; }
-  .sdx-divider-text { font-size: 11px; color: #4A4A5E; font-weight: 600; letter-spacing: 1px; }
+    /* ── Phone mockup ─────────────────────────── */
+    .hero-visual { display: flex; justify-content: center; align-items: center; }
+    .phone-wrap { position: relative; width: 260px; animation: float 6s ease-in-out infinite; }
+    @keyframes float { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-14px);} }
+    .phone-glow {
+      position: absolute; inset: -40px;
+      background: radial-gradient(ellipse at center, rgba(108,99,255,0.22) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .phone-frame {
+      position: relative; width: 100%; padding-top: 216%;
+      background: #0D0D16;
+      border-radius: 40px;
+      border: 2px solid rgba(255,255,255,0.09);
+      box-shadow: 0 40px 80px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.06);
+      overflow: hidden;
+    }
+    .phone-screen {
+      position: absolute; inset: 0; border-radius: 38px; overflow: hidden;
+      background: #0A0A0F; display: flex; flex-direction: column;
+    }
 
-  .sdx-features { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 48px; }
+    .phone-statusbar {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 10px 16px 4px; flex-shrink: 0;
+    }
+    .phone-statusbar-time { font-size: 11px; font-weight: 700; color: var(--text); }
+    .phone-statusbar-icons { display: flex; align-items: center; gap: 4px; }
+    .phone-statusbar-icons i { font-size: 9px; color: var(--text); }
+    .phone-battery {
+      width: 18px; height: 9px; border: 1px solid rgba(255,255,255,0.5);
+      border-radius: 2px; display: flex; align-items: center; padding: 1px; position: relative;
+    }
+    .phone-battery::after {
+      content:''; position: absolute; right: -4px; top: 50%;
+      transform: translateY(-50%); width: 2px; height: 4px;
+      background: rgba(255,255,255,0.4); border-radius: 0 1px 1px 0;
+    }
+    .phone-battery-fill { width: 78%; height: 100%; background: var(--success); border-radius: 1px; }
 
-  .sdx-feature {
-    background: #13131A;
-    border: 1px solid #1C1C26;
-    border-radius: 16px;
-    padding: 20px 16px;
-  }
+    .phone-appbar {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 6px 14px 8px; flex-shrink: 0;
+    }
+    .phone-appbar-logo { font-size: 16px; font-weight: 900; color: var(--text); letter-spacing: -0.3px; }
+    .phone-appbar-logo span { color: var(--primary); }
+    .phone-appbar-actions { display: flex; gap: 6px; }
+    .phone-appbar-btn {
+      width: 28px; height: 28px; border-radius: 8px;
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .phone-appbar-btn i { font-size: 10px; color: var(--text-sub); }
 
-  .sdx-feature-icon {
-    width: 40px; height: 40px; border-radius: 12px;
-    display: flex; align-items: center; justify-content: center;
-    margin-bottom: 12px; font-size: 18px;
-  }
+    .phone-hero-section {
+      margin: 0 10px 8px;
+      border-radius: 14px; overflow: hidden;
+      position: relative; height: 76px; flex-shrink: 0;
+      background: linear-gradient(135deg, #1a1030, #0D1A2A);
+    }
+    .phone-hero-gradient {
+      position: absolute; inset: 0;
+      background: linear-gradient(to right, rgba(0,0,0,0.6), transparent);
+    }
+    .phone-hero-info {
+      position: absolute; bottom: 10px; left: 10px;
+    }
+    .phone-hero-title { font-size: 12px; font-weight: 900; color: #fff; }
+    .phone-hero-meta { font-size: 9px; color: rgba(255,255,255,0.6); margin-top: 2px; }
 
-  .sdx-feature-icon.purple { background: rgba(108,99,255,0.15); }
-  .sdx-feature-icon.gold { background: rgba(255,184,48,0.15); }
-  .sdx-feature-icon.blue { background: rgba(74,158,255,0.15); }
-  .sdx-feature-icon.green { background: rgba(76,175,130,0.15); }
+    .phone-section-label {
+      font-size: 9px; font-weight: 700; color: var(--text-muted);
+      letter-spacing: 0.8px; padding: 0 12px 6px; flex-shrink: 0;
+    }
 
-  .sdx-feature h3 { font-size: 13px; font-weight: 700; margin-bottom: 5px; color: #F0F0F5; }
-  .sdx-feature p { font-size: 11px; color: #5A5A72; line-height: 1.5; }
+    .phone-row {
+      display: flex; gap: 7px;
+      padding: 0 10px 10px; flex-shrink: 0;
+    }
+    .phone-card {
+      border-radius: 10px; overflow: hidden; flex-shrink: 0;
+      position: relative;
+    }
+    .phone-card-img {
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; font-weight: 900;
+      color: rgba(255,255,255,0.4);
+    }
+    .phone-card-badge {
+      position: absolute; top: 4px; left: 4px;
+      width: 16px; height: 16px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .phone-card-badge i { font-size: 7px; color: #fff; }
 
-  .sdx-stats {
-    display: grid; grid-template-columns: 1fr 1fr 1fr;
-    background: #13131A; border: 1px solid #1C1C26;
-    border-radius: 16px; overflow: hidden;
-    margin-bottom: 48px;
-  }
+    .phone-continue-section { padding: 0 10px 8px; flex-shrink: 0; }
+    .phone-continue-card {
+      border-radius: 12px; overflow: hidden;
+      background: linear-gradient(135deg, #1a1430, #0f1a2e);
+      position: relative; height: 64px;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+    .phone-continue-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to right, rgba(0,0,0,0.2), rgba(0,0,0,0.7));
+    }
+    .phone-continue-info {
+      position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
+    }
+    .phone-continue-title { font-size: 10px; font-weight: 800; color: #fff; }
+    .phone-continue-ep { font-size: 8px; color: rgba(255,255,255,0.55); margin-top: 1px; }
+    .phone-continue-progress {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 3px; background: rgba(255,255,255,0.1);
+    }
+    .phone-continue-fill { height: 100%; background: var(--primary); border-radius: 2px; }
+    .phone-play-btn {
+      position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+      width: 28px; height: 28px; border-radius: 50%;
+      background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center;
+    }
+    .phone-play-btn i { font-size: 9px; color: #fff; margin-left: 1px; }
 
-  .sdx-stat {
-    padding: 20px 12px; text-align: center;
-    border-right: 1px solid #1C1C26;
-  }
-  .sdx-stat:last-child { border-right: none; }
-  .sdx-stat-value { font-size: 22px; font-weight: 900; color: #6C63FF; line-height: 1; margin-bottom: 4px; }
-  .sdx-stat-label { font-size: 10px; color: #5A5A72; font-weight: 600; letter-spacing: 0.3px; }
+    .phone-xp-bar {
+      margin: 0 10px 8px; padding: 8px 10px;
+      background: rgba(108,99,255,0.1); border-radius: 10px;
+      border: 1px solid rgba(108,99,255,0.2); flex-shrink: 0;
+    }
+    .phone-xp-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+    .phone-xp-label { font-size: 8px; font-weight: 700; color: var(--primary-light); }
+    .phone-xp-pts { font-size: 8px; color: var(--text-muted); }
+    .phone-xp-track { height: 4px; background: rgba(255,255,255,0.08); border-radius: 2px; overflow: hidden; }
+    .phone-xp-fill { height: 100%; background: var(--primary); border-radius: 2px; width: 64%; }
 
-  .sdx-screen-preview {
-    background: #13131A;
-    border: 1px solid #1C1C26;
-    border-radius: 20px;
-    padding: 20px;
-    margin-bottom: 48px;
-    overflow: hidden;
-  }
+    .phone-bottom-nav {
+      flex-shrink: 0; margin-top: auto;
+      padding: 8px 8px 12px;
+      background: rgba(255,255,255,0.03);
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+    .phone-nav-inner { display: flex; justify-content: space-around; align-items: center; }
+    .phone-nav-item {
+      display: flex; flex-direction: column; align-items: center; gap: 2px;
+      font-size: 7px; color: var(--text-muted); min-width: 40px;
+    }
+    .phone-nav-item i { font-size: 16px; }
+    .phone-nav-item.active { color: var(--primary); }
+    .phone-home-ind {
+      width: 70px; height: 3px; background: rgba(255,255,255,0.2);
+      border-radius: 2px; margin: 6px auto 0;
+    }
 
-  .sdx-screen-label {
-    font-size: 10px; font-weight: 700; color: #4A4A5E;
-    letter-spacing: 1.2px; margin-bottom: 16px;
-  }
+    /* ── Sections shared ──────────────────────── */
+    .section-label {
+      font-size: 11px; font-weight: 700; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--primary-light); margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: clamp(26px, 4vw, 40px); font-weight: 900; letter-spacing: -1px;
+      color: var(--text); margin-bottom: 14px; line-height: 1.1;
+    }
+    .section-subtitle {
+      font-size: 16px; line-height: 1.7; color: var(--text-sub);
+      max-width: 560px; margin-bottom: 52px;
+    }
+    .section-header { margin-bottom: 52px; }
 
-  .sdx-mock-item {
-    display: flex; align-items: center; gap: 12px;
-    padding: 10px 0;
-    border-bottom: 1px solid #1C1C26;
-  }
-  .sdx-mock-item:last-child { border-bottom: none; }
+    /* ── Stats strip ──────────────────────────── */
+    .stats-strip {
+      padding: 32px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .stats-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+    }
+    .stat-item {
+      text-align: center; padding: 16px 24px;
+      border-right: 1px solid var(--border);
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-value { font-size: 32px; font-weight: 900; color: var(--primary); letter-spacing: -1px; margin-bottom: 4px; }
+    .stat-label { font-size: 13px; color: var(--text-muted); font-weight: 500; }
 
-  .sdx-mock-poster {
-    width: 38px; height: 54px; border-radius: 6px;
-    flex-shrink: 0;
-  }
-  .sdx-mock-info { flex: 1; min-width: 0; }
-  .sdx-mock-title { font-size: 13px; font-weight: 700; color: #F0F0F5; margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .sdx-mock-meta { font-size: 11px; color: #5A5A72; }
+    /* ── Features ────────────────────────────── */
+    #features { padding: 100px 0; }
+    .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .feature-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 20px; padding: 28px; transition: all 0.3s;
+      position: relative; overflow: hidden;
+    }
+    .feature-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border-accent), transparent);
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .feature-card:hover { background: var(--surface-el); border-color: var(--border-accent); transform: translateY(-4px); }
+    .feature-card:hover::before { opacity: 1; }
+    .feature-icon {
+      width: 46px; height: 46px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; margin-bottom: 16px;
+    }
+    .feature-title { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+    .feature-desc { font-size: 13px; line-height: 1.6; color: var(--text-sub); }
 
-  .sdx-mock-badge {
-    font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 100px;
-    flex-shrink: 0;
-  }
-  .sdx-mock-badge.watched { background: rgba(76,175,130,0.15); color: #4CAF82; }
-  .sdx-mock-badge.pending { background: rgba(74,158,255,0.15); color: #4A9EFF; }
-  .sdx-mock-badge.watching { background: rgba(255,184,48,0.15); color: #FFB830; }
+    /* ── Gamification showcase ─────────────────── */
+    #gamification { padding: 80px 0; }
+    .gami-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+    .gami-tiers { display: flex; flex-direction: column; gap: 12px; }
+    .tier-card {
+      display: flex; align-items: center; gap: 14px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; padding: 16px 18px; transition: all 0.25s;
+    }
+    .tier-card:hover { border-color: var(--border-accent); background: var(--surface-el); }
+    .tier-icon {
+      width: 40px; height: 40px; border-radius: 11px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; flex-shrink: 0;
+    }
+    .tier-info { flex: 1; }
+    .tier-name { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
+    .tier-desc { font-size: 12px; color: var(--text-sub); }
+    .tier-badge {
+      font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px;
+    }
 
-  .sdx-mock-xp {
-    display: flex; align-items: center; gap: 8px; margin-top: 12px;
-    background: rgba(108,99,255,0.08);
-    border: 1px solid rgba(108,99,255,0.2);
-    border-radius: 10px; padding: 10px 14px;
-  }
-  .sdx-mock-xp-text { font-size: 12px; font-weight: 700; color: #9C8FFF; }
-  .sdx-mock-xp-bar { flex: 1; height: 4px; background: #1C1C26; border-radius: 100px; overflow: hidden; }
-  .sdx-mock-xp-fill { height: 100%; background: #6C63FF; border-radius: 100px; width: 68%; }
+    .xp-preview {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 20px; padding: 24px; margin-top: 16px;
+    }
+    .xp-preview-title { font-size: 13px; font-weight: 700; color: var(--text-sub); margin-bottom: 12px; }
+    .xp-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .xp-level { font-size: 28px; font-weight: 900; color: var(--primary); }
+    .xp-pts { font-size: 13px; color: var(--text-muted); }
+    .xp-track { height: 8px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden; margin-bottom: 8px; }
+    .xp-fill { height: 100%; border-radius: 4px; background: var(--primary); width: 64%; }
+    .xp-label { font-size: 12px; color: var(--text-muted); }
 
-  .sdx-footer {
-    text-align: center;
-    padding-top: 24px;
-    border-top: 1px solid #1C1C26;
-  }
-  .sdx-footer p { font-size: 12px; color: #2A2A38; }
-  .sdx-footer span { color: #3A3A52; }
+    /* ── Platforms ───────────────────────────── */
+    #platforms { padding: 80px 0; }
+    .platforms-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+    .platform-chips { display: flex; flex-wrap: wrap; gap: 10px; }
+    .platform-chip {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 12px; padding: 10px 14px;
+      font-size: 13px; font-weight: 600; color: var(--text-sub);
+      transition: all 0.25s;
+    }
+    .platform-chip:hover { border-color: var(--border-accent); color: var(--text); }
+    .platform-chip .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
 
-  .sdx-download-notice {
-    display: none;
-    background: rgba(108,99,255,0.1);
-    border: 1px solid rgba(108,99,255,0.3);
-    border-radius: 14px;
-    padding: 16px 20px;
-    text-align: center;
-    margin-bottom: 24px;
-  }
-  .sdx-download-notice p { font-size: 14px; color: #9C8FFF; font-weight: 600; margin-bottom: 4px; }
-  .sdx-download-notice small { font-size: 12px; color: #5A5A72; }
-</style>
+    /* ── Profile sharing ─────────────────────── */
+    #sharing { padding: 80px 0; }
+    .sharing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .sharing-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 20px; padding: 26px; text-align: center; transition: all 0.3s;
+    }
+    .sharing-card:hover { border-color: var(--border-accent); transform: translateY(-4px); }
+    .sharing-icon {
+      width: 52px; height: 52px; border-radius: 15px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; margin: 0 auto 14px;
+    }
+    .sharing-title { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+    .sharing-desc { font-size: 13px; color: var(--text-sub); line-height: 1.6; }
 
-<div class="sdx-root">
-  <div class="sdx-noise"></div>
-  <div class="sdx-wrap">
+    /* ── FAQ ──────────────────────────────────── */
+    #faq { padding: 80px 0; }
+    .faq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .faq-item {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 16px; padding: 22px; cursor: pointer; transition: all 0.25s;
+    }
+    .faq-item:hover { border-color: var(--border-accent); background: var(--surface-el); }
+    .faq-q {
+      font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 10px;
+      display: flex; justify-content: space-between; align-items: flex-start; gap: 10px;
+    }
+    .faq-q i { color: var(--primary-light); font-size: 11px; flex-shrink: 0; margin-top: 2px; }
+    .faq-a { font-size: 13px; color: var(--text-sub); line-height: 1.65; }
 
-    <nav class="sdx-nav">
-      <div class="sdx-logo-text">Stream<span>Dex</span></div>
-      <div class="sdx-badge">v1.0 · Android</div>
-    </nav>
+    /* ── Download CTA ────────────────────────── */
+    #download { padding: 80px 0; text-align: center; }
+    .download-inner {
+      background: linear-gradient(135deg, rgba(108,99,255,0.18), rgba(255,107,107,0.06));
+      border: 1px solid rgba(108,99,255,0.3);
+      border-radius: 28px; padding: 60px 48px; position: relative; overflow: hidden;
+    }
+    .download-inner::before {
+      content: ''; position: absolute; top: -60%; left: -20%; width: 140%; height: 200%;
+      background: radial-gradient(ellipse at center, rgba(108,99,255,0.12) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .download-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 5px 14px; border-radius: 20px;
+      background: rgba(76,175,130,0.15); border: 1px solid rgba(76,175,130,0.3);
+      font-size: 12px; font-weight: 700; color: var(--success); margin-bottom: 20px;
+      position: relative;
+    }
+    .download-title {
+      font-size: clamp(28px, 4vw, 44px); font-weight: 900; letter-spacing: -1.5px;
+      color: var(--text); margin-bottom: 14px; position: relative;
+    }
+    .download-subtitle { font-size: 16px; color: var(--text-sub); margin-bottom: 36px; position: relative; }
+    .download-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; position: relative; }
 
-    <section class="sdx-hero">
-      <div class="sdx-hero-eyebrow">
-        <div class="sdx-hero-eyebrow-dot"></div>
-        Tu índice personal del streaming
-      </div>
-      <h1>Registra cada<br><span class="accent">historia</span> que<br>viviste.</h1>
-      <p>Películas, series y plataformas. Todo en un solo lugar con gamificación y estadísticas de tus gustos.</p>
+    .store-btn {
+      display: inline-flex; align-items: center; gap: 12px;
+      padding: 14px 26px; border-radius: 14px;
+      text-decoration: none; font-size: 14px; font-weight: 700; transition: all 0.25s;
+    }
+    .store-btn.google { background: #fff; color: #111; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
+    .store-btn.google:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.4); }
+    .store-btn.apple { background: #1a1a1a; color: #fff; border: 1px solid rgba(255,255,255,0.1); }
+    .store-btn.apple:hover { background: #222; transform: translateY(-2px); }
+    .store-btn i { font-size: 22px; }
+    .store-btn-label { text-align: left; line-height: 1.3; }
+    .store-btn-label small { display: block; font-size: 10px; font-weight: 400; opacity: 0.65; }
+    .store-btn-label strong { font-size: 15px; }
 
-      <div id="download-section">
-        <div class="sdx-cta-group">
-          <a href="https://play.google.com/store/apps/details?id=com.akissame.streamdex" class="sdx-btn-primary">
-            <svg class="sdx-btn-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M3.18 23.03c.34.19.72.23 1.09.14l11.7-11.7L12.6 8.1 3.18 23.03zM21.4 10.6l-2.55-1.47-3.41 3.41 3.41 3.41 2.56-1.48a1.96 1.96 0 0 0 0-3.87zM2 2.53v18.94l9.34-9.34L2 2.53zm1.18-.56L12.6 15.9l3.37-3.37L4.27 2.1c-.38-.1-.76-.06-1.09.14z"/></svg>
-            Google Play
-          </a>
-          <a href="https://apps.apple.com/app/streamdex/idXXXXXXXX" class="sdx-btn-secondary">
-            <svg class="sdx-btn-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98l-.09.06c-.22.14-2.15 1.25-2.13 3.73.03 2.97 2.6 3.96 2.63 3.97l-.04.16c-.1.31-.43 1.37-1.21 2.72zM13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-            App Store — Próximamente
-          </a>
+    /* ── Footer ──────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--border); padding: 40px 24px; text-align: center;
+      position: relative; z-index: 10;
+    }
+    .footer-logo { font-size: 20px; font-weight: 900; letter-spacing: -0.5px; margin-bottom: 8px; }
+    .footer-logo span { color: var(--primary); }
+    .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; font-style: italic; }
+    .footer-links { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-bottom: 16px; }
+    .footer-links a { font-size: 13px; color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--text-sub); }
+    .footer-copy { font-size: 12px; color: var(--text-muted); }
+
+    /* ── Responsive ──────────────────────────── */
+    @media (max-width: 960px) {
+      .hero-inner { grid-template-columns: 1fr; text-align: center; }
+      .hero-visual { order: -1; }
+      .hero-subtitle { margin: 0 auto 36px; }
+      .hero-cta { justify-content: center; }
+      .hero-trust { justify-content: center; }
+      .features-grid { grid-template-columns: repeat(2, 1fr); }
+      .gami-inner, .platforms-inner { grid-template-columns: 1fr; }
+      .sharing-grid { grid-template-columns: 1fr; }
+      .faq-grid { grid-template-columns: 1fr; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .stats-grid .stat-item:nth-child(2) { border-right: none; }
+      .phone-wrap { width: 230px; }
+    }
+    @media (max-width: 640px) {
+      nav { padding: 12px 16px; }
+      .nav-links .nav-link:not(.cta) { display: none; }
+      .features-grid { grid-template-columns: 1fr; }
+      .download-inner { padding: 36px 20px; }
+      .container { padding: 0 16px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-layer"></div>
+  <div class="bg-grid"></div>
+  <div class="bg-stars" id="stars"></div>
+
+  <!-- Nav -->
+  <nav id="navbar">
+    <a href="#" class="nav-logo">
+      <span class="nav-logo-name">Stream<span>Dex</span></span>
+    </a>
+    <div class="nav-links">
+      <a href="#features" class="nav-link">Funciones</a>
+      <a href="#gamification" class="nav-link">Gamificación</a>
+      <a href="#platforms" class="nav-link">Plataformas</a>
+      <a href="#faq" class="nav-link">FAQ</a>
+      <a href="#download" class="nav-link cta">Descargar gratis</a>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-inner">
+        <div class="hero-text">
+          <div class="hero-eyebrow">
+            <div class="dot"></div>
+            100% Gratuito · Sin suscripciones
+          </div>
+          <h1 class="hero-title">
+            Cada historia<br>que viste,<br>
+            <span class="accent">indexada.</span>
+          </h1>
+          <p class="hero-subtitle">
+            StreamDex es tu diario personal del streaming. Registra lo que ves, descubre dónde está disponible, gana XP y colecciona logros — sin pagar nada, nunca.
+          </p>
+          <div class="hero-cta" id="cta-download">
+            <a href="https://play.google.com/store/apps/details?id=com.akissame.streamdex" class="btn-primary">
+              <i class="fab fa-google-play"></i> Google Play
+            </a>
+            <a href="https://apps.apple.com/app/streamdex/idXXXXXXXX" class="btn-secondary">
+              <i class="fab fa-apple"></i> App Store — Próximamente
+            </a>
+          </div>
+          <div class="hero-trust">
+            <div class="trust-item"><i class="fas fa-check-circle"></i> Siempre gratis</div>
+            <div class="trust-item"><i class="fas fa-check-circle"></i> Sin cuenta requerida</div>
+            <div class="trust-item"><i class="fas fa-check-circle"></i> Datos locales</div>
+          </div>
+        </div>
+
+        <!-- Phone mockup -->
+        <div class="hero-visual">
+          <div class="phone-wrap">
+            <div class="phone-glow"></div>
+            <div class="phone-frame">
+              <div class="phone-screen">
+
+                <div class="phone-statusbar">
+                  <span class="phone-statusbar-time" id="mocktime"></span>
+                  <div class="phone-statusbar-icons">
+                    <i class="fas fa-signal"></i>
+                    <i class="fas fa-wifi"></i>
+                    <div class="phone-battery"><div class="phone-battery-fill"></div></div>
+                  </div>
+                </div>
+
+                <div class="phone-appbar">
+                  <div class="phone-appbar-logo">Stream<span>Dex</span></div>
+                  <div class="phone-appbar-actions">
+                    <div class="phone-appbar-btn"><i class="fas fa-search"></i></div>
+                    <div class="phone-appbar-btn"><i class="fas fa-bell"></i></div>
+                  </div>
+                </div>
+
+                <!-- Featured hero movie -->
+                <div class="phone-hero-section" style="background: linear-gradient(135deg, #1a0f30 0%, #0a1428 100%);">
+                  <div style="position:absolute;inset:0;background:url('data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"76\"><rect width=\"100\" height=\"76\" fill=\"%230D1428\"/><rect x=\"0\" y=\"0\" width=\"60\" height=\"76\" fill=\"%23150A2A\" opacity=\"0.8\"/></svg>') center/cover"></div>
+                  <div class="phone-hero-gradient"></div>
+                  <div class="phone-hero-info">
+                    <div class="phone-hero-title">Dune: Part Two</div>
+                    <div class="phone-hero-meta">⭐ 8.5 · 2024 · 2h 46min</div>
+                  </div>
+                </div>
+
+                <!-- Top 20 row -->
+                <div class="phone-section-label" style="margin-top:4px">TOP 20 PELÍCULAS</div>
+                <div class="phone-row">
+                  <div class="phone-card" style="width:52px;height:76px;background:linear-gradient(135deg,#1a1030,#2a0a20);">
+                    <div class="phone-card-img" style="font-size:14px;color:rgba(255,255,255,0.3)">1</div>
+                    <div class="phone-card-badge" style="background:rgba(76,175,130,0.9)"><i class="fas fa-check"></i></div>
+                  </div>
+                  <div class="phone-card" style="width:52px;height:76px;background:linear-gradient(135deg,#0a1a20,#0f2a30);">
+                    <div class="phone-card-img" style="font-size:14px;color:rgba(255,255,255,0.3)">2</div>
+                  </div>
+                  <div class="phone-card" style="width:52px;height:76px;background:linear-gradient(135deg,#1a1520,#2a1a30);">
+                    <div class="phone-card-img" style="font-size:14px;color:rgba(255,255,255,0.3)">3</div>
+                    <div class="phone-card-badge" style="background:rgba(74,158,255,0.9)"><i class="fas fa-bookmark"></i></div>
+                  </div>
+                  <div class="phone-card" style="width:52px;height:76px;background:linear-gradient(135deg,#201a0a,#302a10);">
+                    <div class="phone-card-img" style="font-size:14px;color:rgba(255,255,255,0.3)">4</div>
+                  </div>
+                </div>
+
+                <!-- Continue watching -->
+                <div class="phone-section-label">CONTINUAR VIENDO</div>
+                <div class="phone-continue-section">
+                  <div class="phone-continue-card">
+                    <div style="position:absolute;inset:0;background:linear-gradient(135deg,#1a0a30,#0a1a20)"></div>
+                    <div class="phone-continue-overlay"></div>
+                    <div class="phone-continue-info">
+                      <div class="phone-continue-title">The Last of Us</div>
+                      <div class="phone-continue-ep">T2 · E3 · 52min</div>
+                    </div>
+                    <div class="phone-play-btn"><i class="fas fa-play"></i></div>
+                    <div class="phone-continue-progress"><div class="phone-continue-fill" style="width:45%"></div></div>
+                  </div>
+                </div>
+
+                <!-- XP bar -->
+                <div class="phone-xp-bar">
+                  <div class="phone-xp-row">
+                    <div class="phone-xp-label">NIVEL 12 · VETERANO</div>
+                    <div class="phone-xp-pts">640 / 1000 XP</div>
+                  </div>
+                  <div class="phone-xp-track"><div class="phone-xp-fill"></div></div>
+                </div>
+
+                <div class="phone-bottom-nav">
+                  <div class="phone-nav-inner">
+                    <div class="phone-nav-item active">
+                      <i class="fas fa-compass"></i>
+                      <span>Explorar</span>
+                    </div>
+                    <div class="phone-nav-item">
+                      <i class="fas fa-film"></i>
+                      <span>Biblioteca</span>
+                    </div>
+                    <div class="phone-nav-item">
+                      <i class="fas fa-sliders"></i>
+                      <span>Config</span>
+                    </div>
+                    <div class="phone-nav-item">
+                      <i class="fas fa-user"></i>
+                      <span>Perfil</span>
+                    </div>
+                  </div>
+                  <div class="phone-home-ind"></div>
+                </div>
+
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </section>
-
-    <div class="sdx-stats">
-      <div class="sdx-stat">
-        <div class="sdx-stat-value">500K+</div>
-        <div class="sdx-stat-label">Títulos</div>
-      </div>
-      <div class="sdx-stat">
-        <div class="sdx-stat-value">100+</div>
-        <div class="sdx-stat-label">Logros</div>
-      </div>
-      <div class="sdx-stat">
-        <div class="sdx-stat-value">50+</div>
-        <div class="sdx-stat-label">Plataformas</div>
-      </div>
     </div>
+  </section>
 
-    <div class="sdx-screen-preview">
-      <div class="sdx-screen-label">VISTA PREVIA · MI BIBLIOTECA</div>
-
-      <div class="sdx-mock-item">
-        <div class="sdx-mock-poster" style="background: linear-gradient(135deg, #1C1C3A, #3A2060);"></div>
-        <div class="sdx-mock-info">
-          <div class="sdx-mock-title">Dune: Part Two</div>
-          <div class="sdx-mock-meta">2024 · Ciencia Ficción · 2h 46min</div>
+  <!-- Stats strip -->
+  <div class="stats-strip">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat-item">
+          <div class="stat-value">500K+</div>
+          <div class="stat-label">Títulos disponibles</div>
         </div>
-        <div class="sdx-mock-badge watched">Vista</div>
-      </div>
-
-      <div class="sdx-mock-item">
-        <div class="sdx-mock-poster" style="background: linear-gradient(135deg, #1A2A1A, #0F4A2A);"></div>
-        <div class="sdx-mock-info">
-          <div class="sdx-mock-title">The Last of Us</div>
-          <div class="sdx-mock-meta">2023 · Drama · T2 en curso</div>
+        <div class="stat-item">
+          <div class="stat-value">100+</div>
+          <div class="stat-label">Logros desbloqueables</div>
         </div>
-        <div class="sdx-mock-badge watching">Viendo</div>
-      </div>
-
-      <div class="sdx-mock-item">
-        <div class="sdx-mock-poster" style="background: linear-gradient(135deg, #2A1A1A, #4A1A0C);"></div>
-        <div class="sdx-mock-info">
-          <div class="sdx-mock-title">Oppenheimer</div>
-          <div class="sdx-mock-meta">2023 · Historia · 3h 0min</div>
+        <div class="stat-item">
+          <div class="stat-value">50+</div>
+          <div class="stat-label">Plataformas rastreadas</div>
         </div>
-        <div class="sdx-mock-badge pending">Pendiente</div>
-      </div>
-
-      <div class="sdx-mock-xp">
-        <div class="sdx-mock-xp-text">Nivel 12 · 680 / 1000 XP</div>
-        <div class="sdx-mock-xp-bar"><div class="sdx-mock-xp-fill"></div></div>
+        <div class="stat-item">
+          <div class="stat-value">$0</div>
+          <div class="stat-label">Precio para siempre</div>
+        </div>
       </div>
     </div>
-
-    <div class="sdx-divider">
-      <div class="sdx-divider-line"></div>
-      <div class="sdx-divider-text">FUNCIONALIDADES</div>
-      <div class="sdx-divider-line"></div>
-    </div>
-
-    <div class="sdx-features">
-      <div class="sdx-feature">
-        <div class="sdx-feature-icon purple">🎬</div>
-        <h3>Tracking</h3>
-        <p>Visto, en progreso, pendiente y rewatch con historial completo</p>
-      </div>
-      <div class="sdx-feature">
-        <div class="sdx-feature-icon gold">🏆</div>
-        <h3>Gamificación</h3>
-        <p>XP, niveles, más de 100 logros y rachas diarias</p>
-      </div>
-      <div class="sdx-feature">
-        <div class="sdx-feature-icon blue">📺</div>
-        <h3>Plataformas</h3>
-        <p>Dónde está disponible en tu región en tiempo real</p>
-      </div>
-      <div class="sdx-feature">
-        <div class="sdx-feature-icon green">📊</div>
-        <h3>Estadísticas</h3>
-        <p>Géneros, directores, décadas e insights de tus gustos</p>
-      </div>
-      <div class="sdx-feature">
-        <div class="sdx-feature-icon purple">🔔</div>
-        <h3>Notificaciones</h3>
-        <p>Estrenos de pendientes y nuevos episodios sin internet</p>
-      </div>
-      <div class="sdx-feature">
-        <div class="sdx-feature-icon gold">🌍</div>
-        <h3>Tu perfil</h3>
-        <p>Exporta y comparte tu perfil completo con amigos</p>
-      </div>
-    </div>
-
-    <footer class="sdx-footer">
-      <p>StreamDex &nbsp;·&nbsp; <span>streamdex.akissame.com.co</span></p>
-    </footer>
-
   </div>
-</div>
 
-<script>
-  (function() {
-    const redirectUrl = sessionStorage.getItem('sdx_redirect');
-    if (!redirectUrl) return;
-    sessionStorage.removeItem('sdx_redirect');
-    const url = new URL(redirectUrl);
-    const path = url.pathname;
-    window.location.href = 'streamdex:/' + path;
-    setTimeout(function() {
-      const notice = document.getElementById('deeplink-notice');
-      if (notice) notice.style.display = 'block';
-    }, 2000);
-  })();
-</script>
+  <!-- Features -->
+  <section id="features">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">Funciones</div>
+        <h2 class="section-title">Todo lo que necesitas.<br>Nada de lo que no.</h2>
+        <p class="section-subtitle">Construido para quien ve en serio y quiere saberlo todo sobre su consumo audiovisual.</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon" style="background:rgba(108,99,255,0.12);color:#9C8FFF"><i class="fas fa-check-circle"></i></div>
+          <div class="feature-title">Tracking completo</div>
+          <div class="feature-desc">Visto, en progreso, pendiente y rewatch. Registra episodios individuales con marca de tiempo y notas.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background:rgba(255,184,48,0.12);color:#FFB830"><i class="fas fa-trophy"></i></div>
+          <div class="feature-title">Gamificación real</div>
+          <div class="feature-desc">XP por cada título visto, niveles, más de 100 logros por categoría y rachas diarias para no perder el ritmo.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background:rgba(74,158,255,0.12);color:#4A9EFF"><i class="fas fa-tv"></i></div>
+          <div class="feature-title">Plataformas en tiempo real</div>
+          <div class="feature-desc">Sabe exactamente en qué plataforma de streaming está disponible cada título en tu región.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background:rgba(76,175,130,0.12);color:#4CAF82"><i class="fas fa-chart-bar"></i></div>
+          <div class="feature-title">Estadísticas detalladas</div>
+          <div class="feature-desc">Géneros favoritos, directores más vistos, tiempo total consumido, décadas preferidas y más de 20 métricas.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background:rgba(255,107,107,0.12);color:#FF6B6B"><i class="fas fa-bell"></i></div>
+          <div class="feature-title">Notificaciones locales</div>
+          <div class="feature-desc">Entérate cuando se estrenan tus pendientes y cuando hay nuevos episodios — sin internet y sin cuenta.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background:rgba(108,99,255,0.12);color:#9C8FFF"><i class="fas fa-share-nodes"></i></div>
+          <div class="feature-title">Perfil exportable</div>
+          <div class="feature-desc">Exporta tu historial completo en un archivo .sdx y compártelo con amigos. Visualiza el perfil de otros usuarios.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background:rgba(255,184,48,0.12);color:#FFB830"><i class="fas fa-magnifying-glass"></i></div>
+          <div class="feature-title">Búsqueda universal</div>
+          <div class="feature-desc">Busca películas, series y personas en una sola consulta. Filtros por tipo de contenido con contadores en tiempo real.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background:rgba(76,175,130,0.12);color:#4CAF82"><i class="fas fa-repeat"></i></div>
+          <div class="feature-title">Contador de rewatches</div>
+          <div class="feature-desc">¿La viste cuatro veces? Lo sabemos. Lleva el conteo exacto de cuántas veces revisaste cada título o episodio.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background:rgba(74,158,255,0.12);color:#4A9EFF"><i class="fas fa-globe"></i></div>
+          <div class="feature-title">Multi-región e idioma</div>
+          <div class="feature-desc">Datos de TMDB en el idioma que prefieras. Cambia región para ver disponibilidad y estrenos de tu país.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gamification -->
+  <section id="gamification">
+    <div class="container">
+      <div class="gami-inner">
+        <div>
+          <div class="section-label">Gamificación</div>
+          <h2 class="section-title">Ver más nunca fue tan adictivo.</h2>
+          <p class="section-subtitle" style="margin-bottom:28px">Sistema de XP, niveles y medallas diseñado para recompensar tu amor por el cine y las series.</p>
+
+          <div class="xp-preview">
+            <div class="xp-preview-title">Tu progreso actual</div>
+            <div class="xp-row">
+              <div class="xp-level">Nivel 12</div>
+              <div class="xp-pts">640 / 1000 XP</div>
+            </div>
+            <div class="xp-track"><div class="xp-fill"></div></div>
+            <div class="xp-label">Rango: <strong style="color:var(--primary-light)">Veterano</strong> · 64 logros desbloqueados</div>
+          </div>
+        </div>
+
+        <div class="gami-tiers">
+          <div class="tier-card">
+            <div class="tier-icon" style="background:rgba(180,180,190,0.1)">🥈</div>
+            <div class="tier-info">
+              <div class="tier-name">Medallas Plata</div>
+              <div class="tier-desc">Logros de progreso constante. Registra géneros, directores y décadas.</div>
+            </div>
+            <div class="tier-badge" style="background:rgba(180,180,190,0.12);color:#B4B4BE">Plata</div>
+          </div>
+          <div class="tier-card">
+            <div class="tier-icon" style="background:rgba(255,184,48,0.1)">🥇</div>
+            <div class="tier-info">
+              <div class="tier-name">Medallas Oro</div>
+              <div class="tier-desc">Para los dedicados. Hitos de volumen, rachas largas y colecciones.</div>
+            </div>
+            <div class="tier-badge" style="background:rgba(255,184,48,0.12);color:#FFB830">Oro</div>
+          </div>
+          <div class="tier-card">
+            <div class="tier-icon" style="background:rgba(156,143,255,0.1)">💎</div>
+            <div class="tier-info">
+              <div class="tier-name">Medallas Platino</div>
+              <div class="tier-desc">Rarísimas. Requieren meses de uso consistente y exploración profunda.</div>
+            </div>
+            <div class="tier-badge" style="background:rgba(156,143,255,0.12);color:#9C8FFF">Platino</div>
+          </div>
+          <div class="tier-card">
+            <div class="tier-icon" style="background:rgba(255,107,107,0.1)">🔐</div>
+            <div class="tier-info">
+              <div class="tier-name">Logros Secretos</div>
+              <div class="tier-desc">No sabrás que existen hasta que los desbloquees. Solo los más curiosos los encuentran.</div>
+            </div>
+            <div class="tier-badge" style="background:rgba(255,107,107,0.12);color:#FF6B6B">Secreto</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Platforms -->
+  <section id="platforms">
+    <div class="container">
+      <div class="platforms-inner">
+        <div>
+          <div class="section-label">Plataformas</div>
+          <h2 class="section-title">Siempre sabrás dónde verlo.</h2>
+          <p class="section-subtitle" style="margin-bottom:28px">Datos actualizados por TMDB para tu región. StreamDex muestra exactamente en qué servicio está disponible cada título en este momento.</p>
+          <div class="platform-chips">
+            <div class="platform-chip"><div class="dot" style="background:#E50914"></div>Netflix</div>
+            <div class="platform-chip"><div class="dot" style="background:#00A8E1"></div>Max</div>
+            <div class="platform-chip"><div class="dot" style="background:#0065BD"></div>Disney+</div>
+            <div class="platform-chip"><div class="dot" style="background:#00A0DC"></div>Prime Video</div>
+            <div class="platform-chip"><div class="dot" style="background:#007BFF"></div>Apple TV+</div>
+            <div class="platform-chip"><div class="dot" style="background:#0078FF"></div>Paramount+</div>
+            <div class="platform-chip"><div class="dot" style="background:#1DB954"></div>MUBI</div>
+            <div class="platform-chip"><div class="dot" style="background:#FF6600"></div>Crunchyroll</div>
+            <div class="platform-chip"><div class="dot" style="background:#5A5A72"></div>+ 40 más</div>
+          </div>
+        </div>
+        <div>
+          <div class="section-label" style="margin-bottom:16px">Cómo funciona</div>
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div class="tier-card">
+              <div class="tier-icon" style="background:rgba(108,99,255,0.1);font-size:14px">1</div>
+              <div class="tier-info">
+                <div class="tier-name">Selecciona tu región</div>
+                <div class="tier-desc">Configura tu país en ajustes para ver disponibilidad local.</div>
+              </div>
+            </div>
+            <div class="tier-card">
+              <div class="tier-icon" style="background:rgba(108,99,255,0.1);font-size:14px">2</div>
+              <div class="tier-info">
+                <div class="tier-name">Abre cualquier título</div>
+                <div class="tier-desc">En la página de detalle verás los logos de los servicios disponibles.</div>
+              </div>
+            </div>
+            <div class="tier-card">
+              <div class="tier-icon" style="background:rgba(108,99,255,0.1);font-size:14px">3</div>
+              <div class="tier-info">
+                <div class="tier-name">Datos siempre frescos</div>
+                <div class="tier-desc">TMDB actualiza la disponibilidad continuamente. Sin caché vieja.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sharing / Profile -->
+  <section id="sharing">
+    <div class="container">
+      <div class="section-header" style="text-align:center">
+        <div class="section-label">Perfil y comunidad</div>
+        <h2 class="section-title">Tu historial, tu identidad.</h2>
+        <p class="section-subtitle" style="margin:0 auto 52px">Comparte quién eres como espectador. Exporta, importa y compara perfiles con tus amigos.</p>
+      </div>
+      <div class="sharing-grid">
+        <div class="sharing-card">
+          <div class="sharing-icon" style="background:rgba(108,99,255,0.12);color:#9C8FFF"><i class="fas fa-file-export"></i></div>
+          <div class="sharing-title">Exporta tu perfil</div>
+          <div class="sharing-desc">Genera un archivo .sdx con todo tu historial, estadísticas y logros. Tuyo para siempre.</div>
+        </div>
+        <div class="sharing-card">
+          <div class="sharing-icon" style="background:rgba(76,175,130,0.12);color:#4CAF82"><i class="fas fa-users"></i></div>
+          <div class="sharing-title">Ve perfiles de amigos</div>
+          <div class="sharing-desc">Importa el .sdx de cualquier persona y explora sus estadísticas, logros y géneros favoritos.</div>
+        </div>
+        <div class="sharing-card">
+          <div class="sharing-icon" style="background:rgba(255,184,48,0.12);color:#FFB830"><i class="fas fa-chart-pie"></i></div>
+          <div class="sharing-title">Insights únicos</div>
+          <div class="sharing-desc">Desde tu director favorito hasta la película más larga que viste — descubre patrones que no conocías.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <div class="container">
+      <div class="section-header" style="text-align:center">
+        <div class="section-label">Preguntas frecuentes</div>
+        <h2 class="section-title">Todo lo que querías saber.</h2>
+      </div>
+      <div class="faq-grid">
+        <div class="faq-item">
+          <div class="faq-q">¿De verdad es completamente gratis? <i class="fas fa-chevron-right"></i></div>
+          <div class="faq-a">Sí, sin asteriscos. StreamDex es gratuita para siempre. No hay plan Premium, no hay suscripción, no hay funciones bloqueadas.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">¿Necesito crear una cuenta? <i class="fas fa-chevron-right"></i></div>
+          <div class="faq-a">No. Todo funciona localmente en tu dispositivo. Sin registro, sin correo, sin contraseña. Solo instalas y empiezas.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">¿Cómo funciona el sistema de XP? <i class="fas fa-chevron-right"></i></div>
+          <div class="faq-a">Ganas XP al marcar películas como vistas, completar temporadas, registrar rewatches y desbloquear logros. El XP sube tu nivel y desbloquea nuevos rangos.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">¿Puedo transferir mis datos a un nuevo teléfono? <i class="fas fa-chevron-right"></i></div>
+          <div class="faq-a">Sí. Exporta tu perfil como archivo .sdx desde el perfil e impórtalo en tu nuevo dispositivo. Sin nube, sin servidor.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">¿Las notificaciones funcionan sin internet? <i class="fas fa-chevron-right"></i></div>
+          <div class="faq-a">Sí. Las notificaciones de estrenos y nuevos episodios son 100% locales. Los datos se actualizan cuando abres la app con conexión.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">¿Qué datos recopila la app? <i class="fas fa-chevron-right"></i></div>
+          <div class="faq-a">Ninguno. Tu historial de visualización, estadísticas y logros viven únicamente en tu dispositivo. No enviamos nada a ningún servidor.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">¿Está disponible en iOS? <i class="fas fa-chevron-right"></i></div>
+          <div class="faq-a">StreamDex está actualmente en Android. La versión para iOS está en desarrollo y llegará próximamente al App Store.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">¿Cómo reporto un error o sugiero una función? <i class="fas fa-chevron-right"></i></div>
+          <div class="faq-a">Puedes escribirnos a streamdex@akissame.com.co o dejar una reseña en Google Play. Leemos todo el feedback.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Download CTA -->
+  <section id="download">
+    <div class="container">
+      <div class="download-inner">
+        <div class="download-badge">
+          <i class="fas fa-check-circle"></i> Gratis para siempre
+        </div>
+        <h2 class="download-title">Tu historial del streaming te espera.</h2>
+        <p class="download-subtitle">Descarga StreamDex gratis. Sin suscripciones, sin cuentas, sin límites.</p>
+        <div class="download-btns">
+          <a href="https://play.google.com/store/apps/details?id=com.akissame.streamdex" class="store-btn google" target="_blank">
+            <i class="fab fa-google-play" style="color:#34A853"></i>
+            <div class="store-btn-label"><small>Disponible en</small><strong>Google Play</strong></div>
+          </a>
+          <a href="https://apps.apple.com/app/streamdex/idXXXXXXXX" class="store-btn apple" target="_blank">
+            <i class="fab fa-apple"></i>
+            <div class="store-btn-label"><small>Próximamente en</small><strong>App Store</strong></div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-logo">Stream<span>Dex</span></div>
+    <p class="footer-tagline">Tu índice personal del mundo del streaming.</p>
+    <div class="footer-links">
+      <a href="#features">Funciones</a>
+      <a href="#gamification">Gamificación</a>
+      <a href="#platforms">Plataformas</a>
+      <a href="#faq">FAQ</a>
+      <a href="mailto:streamdex@akissame.com.co">Contacto</a>
+      <a href="https://akissame.com.co">Akissame</a>
+    </div>
+    <p class="footer-copy">© 2026 Akissame — Steven Oliveros. Todos los derechos reservados.</p>
+  </footer>
+
+  <script>
+    /* Stars */
+    const starsEl = document.getElementById('stars');
+    for (let i = 0; i < 90; i++) {
+      const s = document.createElement('div');
+      s.className = 'star';
+      const size = Math.random() * 2 + 0.8;
+      s.style.cssText = `left:${Math.random()*100}%;top:${Math.random()*100}%;width:${size}px;height:${size}px;--d:${2+Math.random()*5}s;animation-delay:${Math.random()*5}s;opacity:${0.15+Math.random()*0.6};`;
+      starsEl.appendChild(s);
+    }
+
+    /* Nav scroll */
+    const nav = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      nav.style.background = window.scrollY > 40 ? 'rgba(10,10,15,0.95)' : 'rgba(10,10,15,0.8)';
+    });
+
+    /* Smooth scroll */
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+      });
+    });
+
+    /* Mock clock */
+    function updateClock() {
+      const el = document.getElementById('mocktime');
+      if (el) el.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    }
+    updateClock();
+    setInterval(updateClock, 60000);
+  </script>
+</body>
+</html>

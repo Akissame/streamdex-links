@@ -228,7 +228,7 @@
     }
 
     .phone-toggle {
-      display: flex; width: fit-content; margin: 8px 12px 10px;
+      display: flex; width: fit-content; margin: 8px auto 10px;
       background: var(--surface-el); border: 1px solid var(--border);
       border-radius: 20px; padding: 2px; flex-shrink: 0;
     }
@@ -255,12 +255,19 @@
       font-family: 'Inter', sans-serif;
     }
 
-    .phone-continue-section { padding: 0 12px 10px; flex-shrink: 0; }
+    .phone-continue-section { padding: 0 0 10px 12px; flex-shrink: 0; overflow: hidden; }
+    .phone-continue-row { display: flex; gap: 10px; }
     .phone-continue-card {
       border-radius: 14px; overflow: hidden;
-      position: relative; height: 78px;
+      position: relative; height: 78px; flex-shrink: 0;
       border: 1px solid rgba(255,255,255,0.05);
       background-size: cover; background-position: center;
+    }
+    .phone-continue-card.full { width: 186px; }
+    .phone-continue-card.peek { width: 46px; }
+    .phone-continue-card.peek::after {
+      content: ''; position: absolute; inset: 0;
+      background: rgba(0,0,0,0.35);
     }
     .phone-continue-overlay {
       position: absolute; inset: 0;
@@ -659,14 +666,17 @@
                   <!-- Continue watching -->
                   <div class="phone-section-title">Continue watching</div>
                   <div class="phone-continue-section" style="margin-top:8px">
-                    <div class="phone-continue-card" style="background-image:url('https://www.themoviedb.org/t/p/w1280/nmmOKeydeeO4TKucpvyMA2o6gdD.jpg')">
-                      <div class="phone-continue-overlay"></div>
-                      <div class="phone-continue-info">
-                        <div class="phone-continue-title">The Last of Us</div>
-                        <div class="phone-continue-ep">S2 · E3 · 52min</div>
+                    <div class="phone-continue-row">
+                      <div class="phone-continue-card full" style="background-image:url('https://www.themoviedb.org/t/p/w1280/nmmOKeydeeO4TKucpvyMA2o6gdD.jpg')">
+                        <div class="phone-continue-overlay"></div>
+                        <div class="phone-continue-info">
+                          <div class="phone-continue-title">The Last of Us</div>
+                          <div class="phone-continue-ep">S2 · E3 · 52min</div>
+                        </div>
+                        <div class="phone-play-btn"><i class="fas fa-play"></i></div>
+                        <div class="phone-continue-progress"><div class="phone-continue-fill" style="width:45%"></div></div>
                       </div>
-                      <div class="phone-play-btn"><i class="fas fa-play"></i></div>
-                      <div class="phone-continue-progress"><div class="phone-continue-fill" style="width:45%"></div></div>
+                      <div class="phone-continue-card peek" style="background-image:url('https://www.themoviedb.org/t/p/w1280/nmmOKeydeeO4TKucpvyMA2o6gdD.jpg')"></div>
                     </div>
                   </div>
 

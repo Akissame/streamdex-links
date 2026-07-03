@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>StreamDex — Tu índice del streaming</title>
+  <title>StreamDex — Your streaming index</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
-  <meta property="og:title" content="StreamDex — Tu índice del streaming">
-  <meta property="og:description" content="Registra, descubre y colecciona películas y series. Gratis para siempre.">
+  <meta property="og:title" content="StreamDex — Your streaming index">
+  <meta property="og:description" content="Track, discover and collect movies and shows. Free forever.">
   <meta property="og:image" content="https://streamdex.akissame.com.co/og-image.png">
   <meta property="og:url" content="https://streamdex.akissame.com.co">
 
@@ -169,7 +169,7 @@
 
     /* ── Phone mockup ─────────────────────────── */
     .hero-visual { display: flex; justify-content: center; align-items: center; }
-    .phone-wrap { position: relative; width: 260px; animation: float 6s ease-in-out infinite; }
+    .phone-wrap { position: relative; width: 270px; animation: float 6s ease-in-out infinite; }
     @keyframes float { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-14px);} }
     .phone-glow {
       position: absolute; inset: -40px;
@@ -191,7 +191,7 @@
 
     .phone-statusbar {
       display: flex; justify-content: space-between; align-items: center;
-      padding: 10px 16px 4px; flex-shrink: 0;
+      padding: 10px 16px 4px; flex-shrink: 0; position: relative; z-index: 3;
     }
     .phone-statusbar-time { font-size: 11px; font-weight: 700; color: var(--text); }
     .phone-statusbar-icons { display: flex; align-items: center; gap: 4px; }
@@ -205,119 +205,106 @@
       transform: translateY(-50%); width: 2px; height: 4px;
       background: rgba(255,255,255,0.4); border-radius: 0 1px 1px 0;
     }
-    .phone-battery-fill { width: 78%; height: 100%; background: var(--success); border-radius: 1px; }
+    .phone-battery-fill { width: 92%; height: 100%; background: #fff; border-radius: 1px; }
 
     .phone-appbar {
       display: flex; justify-content: space-between; align-items: center;
-      padding: 6px 14px 8px; flex-shrink: 0;
+      padding: 4px 14px 10px; flex-shrink: 0; position: relative; z-index: 3;
     }
-    .phone-appbar-logo { font-size: 16px; font-weight: 900; color: var(--text); letter-spacing: -0.3px; }
+    .phone-appbar-logo { font-size: 18px; font-weight: 900; color: var(--text); letter-spacing: -0.3px; }
     .phone-appbar-logo span { color: var(--primary); }
     .phone-appbar-actions { display: flex; gap: 6px; }
     .phone-appbar-btn {
-      width: 28px; height: 28px; border-radius: 8px;
-      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08);
+      width: 24px; height: 24px; border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
     }
-    .phone-appbar-btn i { font-size: 10px; color: var(--text-sub); }
+    .phone-appbar-btn i { font-size: 13px; color: var(--text); }
 
-    .phone-hero-section {
-      margin: 0 10px 8px;
-      border-radius: 14px; overflow: hidden;
-      position: relative; height: 76px; flex-shrink: 0;
-      background: linear-gradient(135deg, #1a1030, #0D1A2A);
-    }
-    .phone-hero-gradient {
-      position: absolute; inset: 0;
-      background: linear-gradient(to right, rgba(0,0,0,0.6), transparent);
-    }
-    .phone-hero-info {
-      position: absolute; bottom: 10px; left: 10px;
-    }
-    .phone-hero-title { font-size: 12px; font-weight: 900; color: #fff; }
-    .phone-hero-meta { font-size: 9px; color: rgba(255,255,255,0.6); margin-top: 2px; }
+    .phone-scroll { flex: 1; overflow: hidden; position: relative; }
 
-    .phone-section-label {
-      font-size: 9px; font-weight: 700; color: var(--text-muted);
-      letter-spacing: 0.8px; padding: 0 12px 6px; flex-shrink: 0;
+    .phone-section-title {
+      font-size: 15px; font-weight: 800; color: #fff;
+      padding: 10px 12px 0; flex-shrink: 0; letter-spacing: -0.2px;
     }
 
-    .phone-row {
-      display: flex; gap: 7px;
-      padding: 0 10px 10px; flex-shrink: 0;
+    .phone-toggle {
+      display: flex; width: fit-content; margin: 8px 12px 10px;
+      background: var(--surface-el); border: 1px solid var(--border);
+      border-radius: 20px; padding: 2px; flex-shrink: 0;
     }
-    .phone-card {
-      border-radius: 10px; overflow: hidden; flex-shrink: 0;
-      position: relative;
+    .phone-toggle-opt {
+      padding: 4px 12px; border-radius: 18px; font-size: 9px; font-weight: 700;
+      color: var(--text-sub);
     }
-    .phone-card-img {
-      width: 100%; height: 100%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 18px; font-weight: 900;
-      color: rgba(255,255,255,0.4);
-    }
-    .phone-card-badge {
-      position: absolute; top: 4px; left: 4px;
-      width: 16px; height: 16px; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .phone-card-badge i { font-size: 7px; color: #fff; }
+    .phone-toggle-opt.active { background: var(--primary); color: #fff; }
 
-    .phone-continue-section { padding: 0 10px 8px; flex-shrink: 0; }
+    .phone-top20-row {
+      display: flex; gap: 22px;
+      padding: 0 14px 14px; flex-shrink: 0;
+    }
+    .phone-top20-item { position: relative; width: 92px; flex-shrink: 0; }
+    .phone-top20-poster {
+      width: 76px; height: 108px; border-radius: 8px; overflow: hidden;
+      margin-left: 16px; background-size: cover; background-position: center;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+    }
+    .phone-top20-rank {
+      position: absolute; left: 0; bottom: -2px;
+      font-size: 46px; font-weight: 900; line-height: 0.8;
+      color: transparent; -webkit-text-stroke: 1.6px #fff;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .phone-continue-section { padding: 0 12px 10px; flex-shrink: 0; }
     .phone-continue-card {
-      border-radius: 12px; overflow: hidden;
-      background: linear-gradient(135deg, #1a1430, #0f1a2e);
-      position: relative; height: 64px;
+      border-radius: 14px; overflow: hidden;
+      position: relative; height: 78px;
       border: 1px solid rgba(255,255,255,0.05);
+      background-size: cover; background-position: center;
     }
     .phone-continue-overlay {
       position: absolute; inset: 0;
-      background: linear-gradient(to right, rgba(0,0,0,0.2), rgba(0,0,0,0.7));
+      background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 55%, transparent 100%);
     }
     .phone-continue-info {
-      position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
+      position: absolute; left: 12px; bottom: 8px;
     }
-    .phone-continue-title { font-size: 10px; font-weight: 800; color: #fff; }
-    .phone-continue-ep { font-size: 8px; color: rgba(255,255,255,0.55); margin-top: 1px; }
+    .phone-continue-title { font-size: 12px; font-weight: 800; color: #fff; }
+    .phone-continue-ep { font-size: 9px; color: rgba(255,255,255,0.6); margin-top: 2px; }
     .phone-continue-progress {
       position: absolute; bottom: 0; left: 0; right: 0;
-      height: 3px; background: rgba(255,255,255,0.1);
+      height: 3px; background: rgba(255,255,255,0.12);
     }
     .phone-continue-fill { height: 100%; background: var(--primary); border-radius: 2px; }
     .phone-play-btn {
       position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
-      width: 28px; height: 28px; border-radius: 50%;
-      background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center;
+      width: 30px; height: 30px; border-radius: 50%;
+      background: rgba(0,0,0,0.45); display: flex; align-items: center; justify-content: center;
     }
-    .phone-play-btn i { font-size: 9px; color: #fff; margin-left: 1px; }
-
-    .phone-xp-bar {
-      margin: 0 10px 8px; padding: 8px 10px;
-      background: rgba(108,99,255,0.1); border-radius: 10px;
-      border: 1px solid rgba(108,99,255,0.2); flex-shrink: 0;
-    }
-    .phone-xp-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
-    .phone-xp-label { font-size: 8px; font-weight: 700; color: var(--primary-light); }
-    .phone-xp-pts { font-size: 8px; color: var(--text-muted); }
-    .phone-xp-track { height: 4px; background: rgba(255,255,255,0.08); border-radius: 2px; overflow: hidden; }
-    .phone-xp-fill { height: 100%; background: var(--primary); border-radius: 2px; width: 64%; }
+    .phone-play-btn i { font-size: 11px; color: #fff; margin-left: 1px; }
 
     .phone-bottom-nav {
-      flex-shrink: 0; margin-top: auto;
-      padding: 8px 8px 12px;
-      background: rgba(255,255,255,0.03);
-      border-top: 1px solid rgba(255,255,255,0.05);
+      flex-shrink: 0;
+      position: absolute; left: 0; right: 0; bottom: 0;
+      display: flex; justify-content: center; padding-bottom: 10px; z-index: 4;
+      pointer-events: none;
     }
-    .phone-nav-inner { display: flex; justify-content: space-around; align-items: center; }
+    .phone-nav-pill {
+      display: flex; align-items: center; gap: 14px;
+      background: #111827; border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 24px; padding: 8px 14px;
+    }
     .phone-nav-item {
-      display: flex; flex-direction: column; align-items: center; gap: 2px;
-      font-size: 7px; color: var(--text-muted); min-width: 40px;
+      width: 24px; height: 24px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      color: rgba(255,255,255,0.45); font-size: 13px;
     }
-    .phone-nav-item i { font-size: 16px; }
-    .phone-nav-item.active { color: var(--primary); }
-    .phone-home-ind {
-      width: 70px; height: 3px; background: rgba(255,255,255,0.2);
-      border-radius: 2px; margin: 6px auto 0;
+    .phone-nav-item.active { background: rgba(108,99,255,0.18); color: var(--primary); }
+
+    .phone-fade-bottom {
+      position: absolute; left: 0; right: 0; bottom: 0; height: 70px;
+      background: linear-gradient(to top, #0A0A0F 0%, transparent 100%);
+      pointer-events: none; z-index: 2;
     }
 
     /* ── Sections shared ──────────────────────── */
@@ -455,6 +442,32 @@
     .faq-q i { color: var(--primary-light); font-size: 11px; flex-shrink: 0; margin-top: 2px; }
     .faq-a { font-size: 13px; color: var(--text-sub); line-height: 1.65; }
 
+    /* ── Privacy Policy ───────────────────────── */
+    #privacy { padding: 80px 0; }
+    .privacy-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 24px; padding: 44px;
+    }
+    .privacy-updated {
+      font-size: 12px; color: var(--text-muted); margin-bottom: 32px;
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+    .privacy-block { margin-bottom: 28px; }
+    .privacy-block:last-child { margin-bottom: 0; }
+    .privacy-block h3 {
+      font-size: 15px; font-weight: 700; color: var(--text);
+      margin-bottom: 10px; display: flex; align-items: center; gap: 9px;
+    }
+    .privacy-block h3 i { color: var(--primary-light); font-size: 13px; }
+    .privacy-block p, .privacy-block li {
+      font-size: 13.5px; line-height: 1.75; color: var(--text-sub);
+    }
+    .privacy-block ul { padding-left: 20px; margin-top: 6px; }
+    .privacy-block li { margin-bottom: 4px; }
+    .privacy-block strong { color: var(--text); font-weight: 600; }
+    .privacy-block a { color: var(--primary-light); text-decoration: none; }
+    .privacy-block a:hover { text-decoration: underline; }
+
     /* ── Download CTA ────────────────────────── */
     #download { padding: 80px 0; text-align: center; }
     .download-inner {
@@ -521,7 +534,8 @@
       .faq-grid { grid-template-columns: 1fr; }
       .stats-grid { grid-template-columns: repeat(2, 1fr); }
       .stats-grid .stat-item:nth-child(2) { border-right: none; }
-      .phone-wrap { width: 230px; }
+      .phone-wrap { width: 240px; }
+      .privacy-card { padding: 30px 22px; }
     }
     @media (max-width: 640px) {
       nav { padding: 12px 16px; }
@@ -543,11 +557,12 @@
       <span class="nav-logo-name">Stream<span>Dex</span></span>
     </a>
     <div class="nav-links">
-      <a href="#features" class="nav-link">Funciones</a>
-      <a href="#gamification" class="nav-link">Gamificación</a>
-      <a href="#platforms" class="nav-link">Plataformas</a>
+      <a href="#features" class="nav-link">Features</a>
+      <a href="#gamification" class="nav-link">Gamification</a>
+      <a href="#platforms" class="nav-link">Platforms</a>
       <a href="#faq" class="nav-link">FAQ</a>
-      <a href="#download" class="nav-link cta">Descargar gratis</a>
+      <a href="#privacy" class="nav-link">Privacy</a>
+      <a href="#download" class="nav-link cta">Download free</a>
     </div>
   </nav>
 
@@ -558,27 +573,27 @@
         <div class="hero-text">
           <div class="hero-eyebrow">
             <div class="dot"></div>
-            100% Gratuito · Sin suscripciones
+            100% Free · No subscriptions
           </div>
           <h1 class="hero-title">
-            Cada historia<br>que viste,<br>
-            <span class="accent">indexada.</span>
+            Every story<br>you've watched,<br>
+            <span class="accent">indexed.</span>
           </h1>
           <p class="hero-subtitle">
-            StreamDex es tu diario personal del streaming. Registra lo que ves, descubre dónde está disponible, gana XP y colecciona logros — sin pagar nada, nunca.
+            StreamDex is your personal streaming diary. Track what you watch, discover where it's available, earn XP and collect achievements — without paying anything, ever.
           </p>
           <div class="hero-cta" id="cta-download">
             <a href="https://play.google.com/store/apps/details?id=com.akissame.streamdex" class="btn-primary">
               <i class="fab fa-google-play"></i> Google Play
             </a>
             <a href="https://apps.apple.com/app/streamdex/idXXXXXXXX" class="btn-secondary">
-              <i class="fab fa-apple"></i> App Store — Próximamente
+              <i class="fab fa-apple"></i> App Store — Coming soon
             </a>
           </div>
           <div class="hero-trust">
-            <div class="trust-item"><i class="fas fa-check-circle"></i> Siempre gratis</div>
-            <div class="trust-item"><i class="fas fa-check-circle"></i> Sin cuenta requerida</div>
-            <div class="trust-item"><i class="fas fa-check-circle"></i> Datos locales</div>
+            <div class="trust-item"><i class="fas fa-check-circle"></i> Always free</div>
+            <div class="trust-item"><i class="fas fa-check-circle"></i> No account required</div>
+            <div class="trust-item"><i class="fas fa-check-circle"></i> Local data</div>
           </div>
         </div>
 
@@ -602,83 +617,69 @@
                   <div class="phone-appbar-logo">Stream<span>Dex</span></div>
                   <div class="phone-appbar-actions">
                     <div class="phone-appbar-btn"><i class="fas fa-search"></i></div>
-                    <div class="phone-appbar-btn"><i class="fas fa-bell"></i></div>
                   </div>
                 </div>
 
-                <!-- Featured hero movie -->
-                <div class="phone-hero-section" style="background: linear-gradient(135deg, #1a0f30 0%, #0a1428 100%);">
-                  <div style="position:absolute;inset:0;background:url('data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"76\"><rect width=\"100\" height=\"76\" fill=\"%230D1428\"/><rect x=\"0\" y=\"0\" width=\"60\" height=\"76\" fill=\"%23150A2A\" opacity=\"0.8\"/></svg>') center/cover"></div>
-                  <div class="phone-hero-gradient"></div>
-                  <div class="phone-hero-info">
-                    <div class="phone-hero-title">Dune: Part Two</div>
-                    <div class="phone-hero-meta">⭐ 8.5 · 2024 · 2h 46min</div>
-                  </div>
-                </div>
+                <div class="phone-scroll">
 
-                <!-- Top 20 row -->
-                <div class="phone-section-label" style="margin-top:4px">TOP 20 PELÍCULAS</div>
-                <div class="phone-row">
-                  <div class="phone-card" style="width:52px;height:76px;background:linear-gradient(135deg,#1a1030,#2a0a20);">
-                    <div class="phone-card-img" style="font-size:14px;color:rgba(255,255,255,0.3)">1</div>
-                    <div class="phone-card-badge" style="background:rgba(76,175,130,0.9)"><i class="fas fa-check"></i></div>
+                  <!-- Top 20 Movies -->
+                  <div class="phone-section-title">Top 20 Movies</div>
+                  <div class="phone-toggle">
+                    <div class="phone-toggle-opt">Today</div>
+                    <div class="phone-toggle-opt active">Week</div>
                   </div>
-                  <div class="phone-card" style="width:52px;height:76px;background:linear-gradient(135deg,#0a1a20,#0f2a30);">
-                    <div class="phone-card-img" style="font-size:14px;color:rgba(255,255,255,0.3)">2</div>
-                  </div>
-                  <div class="phone-card" style="width:52px;height:76px;background:linear-gradient(135deg,#1a1520,#2a1a30);">
-                    <div class="phone-card-img" style="font-size:14px;color:rgba(255,255,255,0.3)">3</div>
-                    <div class="phone-card-badge" style="background:rgba(74,158,255,0.9)"><i class="fas fa-bookmark"></i></div>
-                  </div>
-                  <div class="phone-card" style="width:52px;height:76px;background:linear-gradient(135deg,#201a0a,#302a10);">
-                    <div class="phone-card-img" style="font-size:14px;color:rgba(255,255,255,0.3)">4</div>
-                  </div>
-                </div>
-
-                <!-- Continue watching -->
-                <div class="phone-section-label">CONTINUAR VIENDO</div>
-                <div class="phone-continue-section">
-                  <div class="phone-continue-card">
-                    <div style="position:absolute;inset:0;background:linear-gradient(135deg,#1a0a30,#0a1a20)"></div>
-                    <div class="phone-continue-overlay"></div>
-                    <div class="phone-continue-info">
-                      <div class="phone-continue-title">The Last of Us</div>
-                      <div class="phone-continue-ep">T2 · E3 · 52min</div>
+                  <div class="phone-top20-row">
+                    <div class="phone-top20-item">
+                      <div class="phone-top20-poster" style="background-image:url('https://www.themoviedb.org/t/p/w1280/nmmOKeydeeO4TKucpvyMA2o6gdD.jpg')"></div>
+                      <div class="phone-top20-rank">1</div>
                     </div>
-                    <div class="phone-play-btn"><i class="fas fa-play"></i></div>
-                    <div class="phone-continue-progress"><div class="phone-continue-fill" style="width:45%"></div></div>
+                    <div class="phone-top20-item">
+                      <div class="phone-top20-poster" style="background-image:url('https://www.themoviedb.org/t/p/w1280/nmmOKeydeeO4TKucpvyMA2o6gdD.jpg')"></div>
+                      <div class="phone-top20-rank">2</div>
+                    </div>
                   </div>
-                </div>
 
-                <!-- XP bar -->
-                <div class="phone-xp-bar">
-                  <div class="phone-xp-row">
-                    <div class="phone-xp-label">NIVEL 12 · VETERANO</div>
-                    <div class="phone-xp-pts">640 / 1000 XP</div>
+                  <!-- Top 20 Shows -->
+                  <div class="phone-section-title">Top 20 Shows</div>
+                  <div class="phone-toggle">
+                    <div class="phone-toggle-opt">Today</div>
+                    <div class="phone-toggle-opt active">Week</div>
                   </div>
-                  <div class="phone-xp-track"><div class="phone-xp-fill"></div></div>
+                  <div class="phone-top20-row">
+                    <div class="phone-top20-item">
+                      <div class="phone-top20-poster" style="background-image:url('https://www.themoviedb.org/t/p/w1280/nmmOKeydeeO4TKucpvyMA2o6gdD.jpg')"></div>
+                      <div class="phone-top20-rank">1</div>
+                    </div>
+                    <div class="phone-top20-item">
+                      <div class="phone-top20-poster" style="background-image:url('https://www.themoviedb.org/t/p/w1280/nmmOKeydeeO4TKucpvyMA2o6gdD.jpg')"></div>
+                      <div class="phone-top20-rank">2</div>
+                    </div>
+                  </div>
+
+                  <!-- Continue watching -->
+                  <div class="phone-section-title">Continue watching</div>
+                  <div class="phone-continue-section" style="margin-top:8px">
+                    <div class="phone-continue-card" style="background-image:url('https://www.themoviedb.org/t/p/w1280/nmmOKeydeeO4TKucpvyMA2o6gdD.jpg')">
+                      <div class="phone-continue-overlay"></div>
+                      <div class="phone-continue-info">
+                        <div class="phone-continue-title">The Last of Us</div>
+                        <div class="phone-continue-ep">S2 · E3 · 52min</div>
+                      </div>
+                      <div class="phone-play-btn"><i class="fas fa-play"></i></div>
+                      <div class="phone-continue-progress"><div class="phone-continue-fill" style="width:45%"></div></div>
+                    </div>
+                  </div>
+
+                  <div class="phone-fade-bottom"></div>
                 </div>
 
                 <div class="phone-bottom-nav">
-                  <div class="phone-nav-inner">
-                    <div class="phone-nav-item active">
-                      <i class="fas fa-compass"></i>
-                      <span>Explorar</span>
-                    </div>
-                    <div class="phone-nav-item">
-                      <i class="fas fa-film"></i>
-                      <span>Biblioteca</span>
-                    </div>
-                    <div class="phone-nav-item">
-                      <i class="fas fa-sliders"></i>
-                      <span>Config</span>
-                    </div>
-                    <div class="phone-nav-item">
-                      <i class="fas fa-user"></i>
-                      <span>Perfil</span>
-                    </div>
+                  <div class="phone-nav-pill">
+                    <div class="phone-nav-item active"><i class="fas fa-compass"></i></div>
+                    <div class="phone-nav-item"><i class="fas fa-film"></i></div>
+                    <div class="phone-nav-item"><i class="fas fa-sliders"></i></div>
+                    <div class="phone-nav-item"><i class="fas fa-user"></i></div>
                   </div>
-                  <div class="phone-home-ind"></div>
                 </div>
 
               </div>
@@ -695,19 +696,19 @@
       <div class="stats-grid">
         <div class="stat-item">
           <div class="stat-value">500K+</div>
-          <div class="stat-label">Títulos disponibles</div>
+          <div class="stat-label">Titles available</div>
         </div>
         <div class="stat-item">
           <div class="stat-value">100+</div>
-          <div class="stat-label">Logros desbloqueables</div>
+          <div class="stat-label">Unlockable achievements</div>
         </div>
         <div class="stat-item">
           <div class="stat-value">50+</div>
-          <div class="stat-label">Plataformas rastreadas</div>
+          <div class="stat-label">Platforms tracked</div>
         </div>
         <div class="stat-item">
           <div class="stat-value">$0</div>
-          <div class="stat-label">Precio para siempre</div>
+          <div class="stat-label">Price forever</div>
         </div>
       </div>
     </div>
@@ -717,55 +718,55 @@
   <section id="features">
     <div class="container">
       <div class="section-header">
-        <div class="section-label">Funciones</div>
-        <h2 class="section-title">Todo lo que necesitas.<br>Nada de lo que no.</h2>
-        <p class="section-subtitle">Construido para quien ve en serio y quiere saberlo todo sobre su consumo audiovisual.</p>
+        <div class="section-label">Features</div>
+        <h2 class="section-title">Everything you need.<br>Nothing you don't.</h2>
+        <p class="section-subtitle">Built for people who watch seriously and want to know everything about their viewing habits.</p>
       </div>
       <div class="features-grid">
         <div class="feature-card">
           <div class="feature-icon" style="background:rgba(108,99,255,0.12);color:#9C8FFF"><i class="fas fa-check-circle"></i></div>
-          <div class="feature-title">Tracking completo</div>
-          <div class="feature-desc">Visto, en progreso, pendiente y rewatch. Registra episodios individuales con marca de tiempo y notas.</div>
+          <div class="feature-title">Complete tracking</div>
+          <div class="feature-desc">Watched, in progress, pending and rewatch. Track individual episodes with timestamps and notes.</div>
         </div>
         <div class="feature-card">
           <div class="feature-icon" style="background:rgba(255,184,48,0.12);color:#FFB830"><i class="fas fa-trophy"></i></div>
-          <div class="feature-title">Gamificación real</div>
-          <div class="feature-desc">XP por cada título visto, niveles, más de 100 logros por categoría y rachas diarias para no perder el ritmo.</div>
+          <div class="feature-title">Real gamification</div>
+          <div class="feature-desc">XP for every title watched, levels, over 100 achievements by category and daily streaks to keep the pace.</div>
         </div>
         <div class="feature-card">
           <div class="feature-icon" style="background:rgba(74,158,255,0.12);color:#4A9EFF"><i class="fas fa-tv"></i></div>
-          <div class="feature-title">Plataformas en tiempo real</div>
-          <div class="feature-desc">Sabe exactamente en qué plataforma de streaming está disponible cada título en tu región.</div>
+          <div class="feature-title">Real-time platforms</div>
+          <div class="feature-desc">Know exactly which streaming platform has each title available in your region.</div>
         </div>
         <div class="feature-card">
           <div class="feature-icon" style="background:rgba(76,175,130,0.12);color:#4CAF82"><i class="fas fa-chart-bar"></i></div>
-          <div class="feature-title">Estadísticas detalladas</div>
-          <div class="feature-desc">Géneros favoritos, directores más vistos, tiempo total consumido, décadas preferidas y más de 20 métricas.</div>
+          <div class="feature-title">Detailed statistics</div>
+          <div class="feature-desc">Favorite genres, most-watched directors, total time consumed, preferred decades and 20+ metrics.</div>
         </div>
         <div class="feature-card">
           <div class="feature-icon" style="background:rgba(255,107,107,0.12);color:#FF6B6B"><i class="fas fa-bell"></i></div>
-          <div class="feature-title">Notificaciones locales</div>
-          <div class="feature-desc">Entérate cuando se estrenan tus pendientes y cuando hay nuevos episodios — sin internet y sin cuenta.</div>
+          <div class="feature-title">Local notifications</div>
+          <div class="feature-desc">Find out when your pending titles release and when new episodes drop — no internet, no account needed.</div>
         </div>
         <div class="feature-card">
           <div class="feature-icon" style="background:rgba(108,99,255,0.12);color:#9C8FFF"><i class="fas fa-share-nodes"></i></div>
-          <div class="feature-title">Perfil exportable</div>
-          <div class="feature-desc">Exporta tu historial completo en un archivo .sdx y compártelo con amigos. Visualiza el perfil de otros usuarios.</div>
+          <div class="feature-title">Exportable profile</div>
+          <div class="feature-desc">Export your full history to a .sdx file and share it with friends. View other users' profiles.</div>
         </div>
         <div class="feature-card">
           <div class="feature-icon" style="background:rgba(255,184,48,0.12);color:#FFB830"><i class="fas fa-magnifying-glass"></i></div>
-          <div class="feature-title">Búsqueda universal</div>
-          <div class="feature-desc">Busca películas, series y personas en una sola consulta. Filtros por tipo de contenido con contadores en tiempo real.</div>
+          <div class="feature-title">Universal search</div>
+          <div class="feature-desc">Search movies, shows and people in a single query. Filters by content type with real-time counters.</div>
         </div>
         <div class="feature-card">
           <div class="feature-icon" style="background:rgba(76,175,130,0.12);color:#4CAF82"><i class="fas fa-repeat"></i></div>
-          <div class="feature-title">Contador de rewatches</div>
-          <div class="feature-desc">¿La viste cuatro veces? Lo sabemos. Lleva el conteo exacto de cuántas veces revisaste cada título o episodio.</div>
+          <div class="feature-title">Rewatch counter</div>
+          <div class="feature-desc">Watched it four times? We know. Keeps an exact count of how many times you revisited each title or episode.</div>
         </div>
         <div class="feature-card">
           <div class="feature-icon" style="background:rgba(74,158,255,0.12);color:#4A9EFF"><i class="fas fa-globe"></i></div>
-          <div class="feature-title">Multi-región e idioma</div>
-          <div class="feature-desc">Datos de TMDB en el idioma que prefieras. Cambia región para ver disponibilidad y estrenos de tu país.</div>
+          <div class="feature-title">Multi-region & language</div>
+          <div class="feature-desc">TMDB data in the language you prefer. Switch region to see availability and releases for your country.</div>
         </div>
       </div>
     </div>
@@ -776,18 +777,18 @@
     <div class="container">
       <div class="gami-inner">
         <div>
-          <div class="section-label">Gamificación</div>
-          <h2 class="section-title">Ver más nunca fue tan adictivo.</h2>
-          <p class="section-subtitle" style="margin-bottom:28px">Sistema de XP, niveles y medallas diseñado para recompensar tu amor por el cine y las series.</p>
+          <div class="section-label">Gamification</div>
+          <h2 class="section-title">Watching more has never been this addictive.</h2>
+          <p class="section-subtitle" style="margin-bottom:28px">An XP, level and medal system designed to reward your love for movies and shows.</p>
 
           <div class="xp-preview">
-            <div class="xp-preview-title">Tu progreso actual</div>
+            <div class="xp-preview-title">Your current progress</div>
             <div class="xp-row">
-              <div class="xp-level">Nivel 12</div>
+              <div class="xp-level">Level 12</div>
               <div class="xp-pts">640 / 1000 XP</div>
             </div>
             <div class="xp-track"><div class="xp-fill"></div></div>
-            <div class="xp-label">Rango: <strong style="color:var(--primary-light)">Veterano</strong> · 64 logros desbloqueados</div>
+            <div class="xp-label">Rank: <strong style="color:var(--primary-light)">Veteran</strong> · 64 achievements unlocked</div>
           </div>
         </div>
 
@@ -795,34 +796,34 @@
           <div class="tier-card">
             <div class="tier-icon" style="background:rgba(180,180,190,0.1)">🥈</div>
             <div class="tier-info">
-              <div class="tier-name">Medallas Plata</div>
-              <div class="tier-desc">Logros de progreso constante. Registra géneros, directores y décadas.</div>
+              <div class="tier-name">Silver medals</div>
+              <div class="tier-desc">Steady-progress achievements. Track genres, directors and decades.</div>
             </div>
-            <div class="tier-badge" style="background:rgba(180,180,190,0.12);color:#B4B4BE">Plata</div>
+            <div class="tier-badge" style="background:rgba(180,180,190,0.12);color:#B4B4BE">Silver</div>
           </div>
           <div class="tier-card">
             <div class="tier-icon" style="background:rgba(255,184,48,0.1)">🥇</div>
             <div class="tier-info">
-              <div class="tier-name">Medallas Oro</div>
-              <div class="tier-desc">Para los dedicados. Hitos de volumen, rachas largas y colecciones.</div>
+              <div class="tier-name">Gold medals</div>
+              <div class="tier-desc">For the dedicated. Volume milestones, long streaks and collections.</div>
             </div>
-            <div class="tier-badge" style="background:rgba(255,184,48,0.12);color:#FFB830">Oro</div>
+            <div class="tier-badge" style="background:rgba(255,184,48,0.12);color:#FFB830">Gold</div>
           </div>
           <div class="tier-card">
             <div class="tier-icon" style="background:rgba(156,143,255,0.1)">💎</div>
             <div class="tier-info">
-              <div class="tier-name">Medallas Platino</div>
-              <div class="tier-desc">Rarísimas. Requieren meses de uso consistente y exploración profunda.</div>
+              <div class="tier-name">Platinum medals</div>
+              <div class="tier-desc">Extremely rare. Require months of consistent use and deep exploration.</div>
             </div>
-            <div class="tier-badge" style="background:rgba(156,143,255,0.12);color:#9C8FFF">Platino</div>
+            <div class="tier-badge" style="background:rgba(156,143,255,0.12);color:#9C8FFF">Platinum</div>
           </div>
           <div class="tier-card">
             <div class="tier-icon" style="background:rgba(255,107,107,0.1)">🔐</div>
             <div class="tier-info">
-              <div class="tier-name">Logros Secretos</div>
-              <div class="tier-desc">No sabrás que existen hasta que los desbloquees. Solo los más curiosos los encuentran.</div>
+              <div class="tier-name">Secret achievements</div>
+              <div class="tier-desc">You won't know they exist until you unlock them. Only the curious find them.</div>
             </div>
-            <div class="tier-badge" style="background:rgba(255,107,107,0.12);color:#FF6B6B">Secreto</div>
+            <div class="tier-badge" style="background:rgba(255,107,107,0.12);color:#FF6B6B">Secret</div>
           </div>
         </div>
       </div>
@@ -834,9 +835,9 @@
     <div class="container">
       <div class="platforms-inner">
         <div>
-          <div class="section-label">Plataformas</div>
-          <h2 class="section-title">Siempre sabrás dónde verlo.</h2>
-          <p class="section-subtitle" style="margin-bottom:28px">Datos actualizados por TMDB para tu región. StreamDex muestra exactamente en qué servicio está disponible cada título en este momento.</p>
+          <div class="section-label">Platforms</div>
+          <h2 class="section-title">You'll always know where to watch it.</h2>
+          <p class="section-subtitle" style="margin-bottom:28px">Data kept up to date by TMDB for your region. StreamDex shows exactly which service has each title available right now.</p>
           <div class="platform-chips">
             <div class="platform-chip"><div class="dot" style="background:#E50914"></div>Netflix</div>
             <div class="platform-chip"><div class="dot" style="background:#00A8E1"></div>Max</div>
@@ -846,31 +847,31 @@
             <div class="platform-chip"><div class="dot" style="background:#0078FF"></div>Paramount+</div>
             <div class="platform-chip"><div class="dot" style="background:#1DB954"></div>MUBI</div>
             <div class="platform-chip"><div class="dot" style="background:#FF6600"></div>Crunchyroll</div>
-            <div class="platform-chip"><div class="dot" style="background:#5A5A72"></div>+ 40 más</div>
+            <div class="platform-chip"><div class="dot" style="background:#5A5A72"></div>+ 40 more</div>
           </div>
         </div>
         <div>
-          <div class="section-label" style="margin-bottom:16px">Cómo funciona</div>
+          <div class="section-label" style="margin-bottom:16px">How it works</div>
           <div style="display:flex;flex-direction:column;gap:12px">
             <div class="tier-card">
               <div class="tier-icon" style="background:rgba(108,99,255,0.1);font-size:14px">1</div>
               <div class="tier-info">
-                <div class="tier-name">Selecciona tu región</div>
-                <div class="tier-desc">Configura tu país en ajustes para ver disponibilidad local.</div>
+                <div class="tier-name">Select your region</div>
+                <div class="tier-desc">Set your country in settings to see local availability.</div>
               </div>
             </div>
             <div class="tier-card">
               <div class="tier-icon" style="background:rgba(108,99,255,0.1);font-size:14px">2</div>
               <div class="tier-info">
-                <div class="tier-name">Abre cualquier título</div>
-                <div class="tier-desc">En la página de detalle verás los logos de los servicios disponibles.</div>
+                <div class="tier-name">Open any title</div>
+                <div class="tier-desc">The detail page shows the logos of all available services.</div>
               </div>
             </div>
             <div class="tier-card">
               <div class="tier-icon" style="background:rgba(108,99,255,0.1);font-size:14px">3</div>
               <div class="tier-info">
-                <div class="tier-name">Datos siempre frescos</div>
-                <div class="tier-desc">TMDB actualiza la disponibilidad continuamente. Sin caché vieja.</div>
+                <div class="tier-name">Always fresh data</div>
+                <div class="tier-desc">TMDB updates availability continuously. No stale cache.</div>
               </div>
             </div>
           </div>
@@ -883,25 +884,25 @@
   <section id="sharing">
     <div class="container">
       <div class="section-header" style="text-align:center">
-        <div class="section-label">Perfil y comunidad</div>
-        <h2 class="section-title">Tu historial, tu identidad.</h2>
-        <p class="section-subtitle" style="margin:0 auto 52px">Comparte quién eres como espectador. Exporta, importa y compara perfiles con tus amigos.</p>
+        <div class="section-label">Profile & community</div>
+        <h2 class="section-title">Your history, your identity.</h2>
+        <p class="section-subtitle" style="margin:0 auto 52px">Share who you are as a viewer. Export, import and compare profiles with your friends.</p>
       </div>
       <div class="sharing-grid">
         <div class="sharing-card">
           <div class="sharing-icon" style="background:rgba(108,99,255,0.12);color:#9C8FFF"><i class="fas fa-file-export"></i></div>
-          <div class="sharing-title">Exporta tu perfil</div>
-          <div class="sharing-desc">Genera un archivo .sdx con todo tu historial, estadísticas y logros. Tuyo para siempre.</div>
+          <div class="sharing-title">Export your profile</div>
+          <div class="sharing-desc">Generate a .sdx file with your full history, stats and achievements. Yours forever.</div>
         </div>
         <div class="sharing-card">
           <div class="sharing-icon" style="background:rgba(76,175,130,0.12);color:#4CAF82"><i class="fas fa-users"></i></div>
-          <div class="sharing-title">Ve perfiles de amigos</div>
-          <div class="sharing-desc">Importa el .sdx de cualquier persona y explora sus estadísticas, logros y géneros favoritos.</div>
+          <div class="sharing-title">See friends' profiles</div>
+          <div class="sharing-desc">Import anyone's .sdx and explore their stats, achievements and favorite genres.</div>
         </div>
         <div class="sharing-card">
           <div class="sharing-icon" style="background:rgba(255,184,48,0.12);color:#FFB830"><i class="fas fa-chart-pie"></i></div>
-          <div class="sharing-title">Insights únicos</div>
-          <div class="sharing-desc">Desde tu director favorito hasta la película más larga que viste — descubre patrones que no conocías.</div>
+          <div class="sharing-title">Unique insights</div>
+          <div class="sharing-desc">From your favorite director to the longest movie you've watched — discover patterns you didn't know about.</div>
         </div>
       </div>
     </div>
@@ -911,41 +912,102 @@
   <section id="faq">
     <div class="container">
       <div class="section-header" style="text-align:center">
-        <div class="section-label">Preguntas frecuentes</div>
-        <h2 class="section-title">Todo lo que querías saber.</h2>
+        <div class="section-label">Frequently asked questions</div>
+        <h2 class="section-title">Everything you wanted to know.</h2>
       </div>
       <div class="faq-grid">
         <div class="faq-item">
-          <div class="faq-q">¿De verdad es completamente gratis? <i class="fas fa-chevron-right"></i></div>
-          <div class="faq-a">Sí, sin asteriscos. StreamDex es gratuita para siempre. No hay plan Premium, no hay suscripción, no hay funciones bloqueadas.</div>
+          <div class="faq-q">Is it really completely free? <i class="fas fa-chevron-right"></i></div>
+          <div class="faq-a">Yes, no asterisks. StreamDex is free forever. There's no Premium plan, no subscription, no locked features.</div>
         </div>
         <div class="faq-item">
-          <div class="faq-q">¿Necesito crear una cuenta? <i class="fas fa-chevron-right"></i></div>
-          <div class="faq-a">No. Todo funciona localmente en tu dispositivo. Sin registro, sin correo, sin contraseña. Solo instalas y empiezas.</div>
+          <div class="faq-q">Do I need to create an account? <i class="fas fa-chevron-right"></i></div>
+          <div class="faq-a">No. Everything runs locally on your device. No sign-up, no email, no password. Just install and start.</div>
         </div>
         <div class="faq-item">
-          <div class="faq-q">¿Cómo funciona el sistema de XP? <i class="fas fa-chevron-right"></i></div>
-          <div class="faq-a">Ganas XP al marcar películas como vistas, completar temporadas, registrar rewatches y desbloquear logros. El XP sube tu nivel y desbloquea nuevos rangos.</div>
+          <div class="faq-q">How does the XP system work? <i class="fas fa-chevron-right"></i></div>
+          <div class="faq-a">You earn XP by marking movies as watched, completing seasons, logging rewatches and unlocking achievements. XP raises your level and unlocks new ranks.</div>
         </div>
         <div class="faq-item">
-          <div class="faq-q">¿Puedo transferir mis datos a un nuevo teléfono? <i class="fas fa-chevron-right"></i></div>
-          <div class="faq-a">Sí. Exporta tu perfil como archivo .sdx desde el perfil e impórtalo en tu nuevo dispositivo. Sin nube, sin servidor.</div>
+          <div class="faq-q">Can I transfer my data to a new phone? <i class="fas fa-chevron-right"></i></div>
+          <div class="faq-a">Yes. Export your profile as a .sdx file from your profile and import it on your new device. No cloud, no server.</div>
         </div>
         <div class="faq-item">
-          <div class="faq-q">¿Las notificaciones funcionan sin internet? <i class="fas fa-chevron-right"></i></div>
-          <div class="faq-a">Sí. Las notificaciones de estrenos y nuevos episodios son 100% locales. Los datos se actualizan cuando abres la app con conexión.</div>
+          <div class="faq-q">Do notifications work without internet? <i class="fas fa-chevron-right"></i></div>
+          <div class="faq-a">Yes. Premiere and new-episode notifications are 100% local. Data refreshes whenever you open the app with a connection.</div>
         </div>
         <div class="faq-item">
-          <div class="faq-q">¿Qué datos recopila la app? <i class="fas fa-chevron-right"></i></div>
-          <div class="faq-a">Ninguno. Tu historial de visualización, estadísticas y logros viven únicamente en tu dispositivo. No enviamos nada a ningún servidor.</div>
+          <div class="faq-q">What data does the app collect? <i class="fas fa-chevron-right"></i></div>
+          <div class="faq-a">None. Your watch history, statistics and achievements live only on your device. We don't send anything to any server.</div>
         </div>
         <div class="faq-item">
-          <div class="faq-q">¿Está disponible en iOS? <i class="fas fa-chevron-right"></i></div>
-          <div class="faq-a">StreamDex está actualmente en Android. La versión para iOS está en desarrollo y llegará próximamente al App Store.</div>
+          <div class="faq-q">Is it available on iOS? <i class="fas fa-chevron-right"></i></div>
+          <div class="faq-a">StreamDex is currently on Android. The iOS version is in development and coming soon to the App Store.</div>
         </div>
         <div class="faq-item">
-          <div class="faq-q">¿Cómo reporto un error o sugiero una función? <i class="fas fa-chevron-right"></i></div>
-          <div class="faq-a">Puedes escribirnos a streamdex@akissame.com.co o dejar una reseña en Google Play. Leemos todo el feedback.</div>
+          <div class="faq-q">How do I report a bug or suggest a feature? <i class="fas fa-chevron-right"></i></div>
+          <div class="faq-a">You can email us at streamdex@akissame.com.co or leave a review on Google Play. We read all feedback.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Privacy Policy -->
+  <section id="privacy">
+    <div class="container">
+      <div class="section-header" style="text-align:center">
+        <div class="section-label">Legal</div>
+        <h2 class="section-title">Privacy Policy</h2>
+        <p class="section-subtitle" style="margin:0 auto 0">How StreamDex handles your data — in short: it mostly doesn't, because it doesn't need to.</p>
+      </div>
+
+      <div class="privacy-card">
+        <div class="privacy-updated"><i class="fas fa-circle-info"></i> Last updated: January 2026</div>
+
+        <div class="privacy-block">
+          <h3><i class="fas fa-database"></i> Data we collect</h3>
+          <p>StreamDex is designed to work without accounts or servers of our own. Your watch history, ratings, achievements, XP, statistics and app preferences are stored <strong>locally on your device</strong> using an on-device database (Isar). We do not collect, transmit or store this information on any remote server operated by us.</p>
+        </div>
+
+        <div class="privacy-block">
+          <h3><i class="fas fa-cloud"></i> Third-party services</h3>
+          <p>To provide movie and show information, StreamDex uses <strong>The Movie Database (TMDB) API</strong>. When you browse or search content, requests are sent to TMDB to retrieve titles, images, cast and availability data. This use is governed by TMDB's own <a href="https://www.themoviedb.org/privacy-policy" target="_blank">privacy policy</a>. StreamDex is not endorsed or certified by TMDB.</p>
+          <p style="margin-top:8px">If enabled, the app may also use Google AdMob to display ads and Google Play services for distribution. These providers may collect limited technical data (such as device identifiers) under their own privacy policies, independent of StreamDex.</p>
+        </div>
+
+        <div class="privacy-block">
+          <h3><i class="fas fa-bell"></i> Notifications</h3>
+          <p>Push notifications for upcoming premieres and new episodes are generated and scheduled entirely <strong>on your device</strong>. No notification content or personal data is sent through an external server.</p>
+        </div>
+
+        <div class="privacy-block">
+          <h3><i class="fas fa-file-export"></i> Profile export & sharing</h3>
+          <p>You may choose to export your profile as a <strong>.sdx file</strong> containing your library, stats and achievements. This file is created and shared directly by you (e.g. via messaging apps) — StreamDex never uploads it automatically, and we have no access to files you export or import.</p>
+        </div>
+
+        <div class="privacy-block">
+          <h3><i class="fas fa-user-shield"></i> Permissions</h3>
+          <ul>
+            <li><strong>Notifications</strong> — to alert you about premieres and new episodes.</li>
+            <li><strong>Storage / Photos</strong> — to save or share images from the app.</li>
+            <li><strong>Camera</strong> — only if you choose to set a custom profile photo.</li>
+          </ul>
+          <p style="margin-top:8px">None of these permissions are used to collect or transmit personal data off your device.</p>
+        </div>
+
+        <div class="privacy-block">
+          <h3><i class="fas fa-child"></i> Children's privacy</h3>
+          <p>StreamDex does not knowingly collect personal information from children, as the app does not collect personal information from anyone — all data stays on-device.</p>
+        </div>
+
+        <div class="privacy-block">
+          <h3><i class="fas fa-rotate"></i> Changes to this policy</h3>
+          <p>We may update this policy as the app evolves. Changes will be reflected on this page with an updated "last updated" date.</p>
+        </div>
+
+        <div class="privacy-block">
+          <h3><i class="fas fa-envelope"></i> Contact</h3>
+          <p>Questions about this policy? Reach out at <a href="mailto:streamdex@akissame.com.co">streamdex@akissame.com.co</a>.</p>
         </div>
       </div>
     </div>
@@ -956,18 +1018,18 @@
     <div class="container">
       <div class="download-inner">
         <div class="download-badge">
-          <i class="fas fa-check-circle"></i> Gratis para siempre
+          <i class="fas fa-check-circle"></i> Free forever
         </div>
-        <h2 class="download-title">Tu historial del streaming te espera.</h2>
-        <p class="download-subtitle">Descarga StreamDex gratis. Sin suscripciones, sin cuentas, sin límites.</p>
+        <h2 class="download-title">Your streaming history is waiting.</h2>
+        <p class="download-subtitle">Download StreamDex for free. No subscriptions, no accounts, no limits.</p>
         <div class="download-btns">
           <a href="https://play.google.com/store/apps/details?id=com.akissame.streamdex" class="store-btn google" target="_blank">
             <i class="fab fa-google-play" style="color:#34A853"></i>
-            <div class="store-btn-label"><small>Disponible en</small><strong>Google Play</strong></div>
+            <div class="store-btn-label"><small>Available on</small><strong>Google Play</strong></div>
           </a>
           <a href="https://apps.apple.com/app/streamdex/idXXXXXXXX" class="store-btn apple" target="_blank">
             <i class="fab fa-apple"></i>
-            <div class="store-btn-label"><small>Próximamente en</small><strong>App Store</strong></div>
+            <div class="store-btn-label"><small>Coming soon to</small><strong>App Store</strong></div>
           </a>
         </div>
       </div>
@@ -977,16 +1039,17 @@
   <!-- Footer -->
   <footer>
     <div class="footer-logo">Stream<span>Dex</span></div>
-    <p class="footer-tagline">Tu índice personal del mundo del streaming.</p>
+    <p class="footer-tagline">Your personal index of the streaming world.</p>
     <div class="footer-links">
-      <a href="#features">Funciones</a>
-      <a href="#gamification">Gamificación</a>
-      <a href="#platforms">Plataformas</a>
+      <a href="#features">Features</a>
+      <a href="#gamification">Gamification</a>
+      <a href="#platforms">Platforms</a>
       <a href="#faq">FAQ</a>
-      <a href="mailto:streamdex@akissame.com.co">Contacto</a>
+      <a href="#privacy">Privacy Policy</a>
+      <a href="mailto:streamdex@akissame.com.co">Contact</a>
       <a href="https://akissame.com.co">Akissame</a>
     </div>
-    <p class="footer-copy">© 2026 Akissame — Steven Oliveros. Todos los derechos reservados.</p>
+    <p class="footer-copy">© 2026 Akissame — Steven Oliveros. All rights reserved.</p>
   </footer>
 
   <script>

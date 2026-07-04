@@ -392,6 +392,20 @@
       font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px;
     }
 
+    .medal-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .medal-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; padding: 14px; transition: all 0.25s;
+    }
+    .medal-card:hover { border-color: var(--border-accent); background: var(--surface-el); transform: translateY(-2px); }
+    .medal-icon {
+      width: 34px; height: 34px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; margin-bottom: 9px;
+    }
+    .medal-name { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
+    .medal-desc { font-size: 11px; color: var(--text-sub); line-height: 1.4; }
+
     .xp-preview {
       background: var(--surface); border: 1px solid var(--border);
       border-radius: 20px; padding: 24px; margin-top: 16px;
@@ -404,7 +418,27 @@
     .xp-fill { height: 100%; border-radius: 4px; background: var(--primary); width: 64%; }
     .xp-label { font-size: 12px; color: var(--text-muted); }
 
-    /* ── Platforms ───────────────────────────── */
+    /* ── Recommendations engine ────────────────── */
+    #recommendations { padding: 80px 0; }
+    .rec-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+    .rec-row-preview {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 20px; padding: 22px;
+    }
+    .rec-row-title { font-size: 13px; font-weight: 700; color: var(--text-sub); margin-bottom: 14px; }
+    .rec-poster-row { display: flex; gap: 10px; margin-bottom: 20px; }
+    .rec-poster-row:last-child { margin-bottom: 0; }
+    .rec-poster {
+      width: 68px; height: 100px; border-radius: 10px; flex-shrink: 0;
+      background-size: cover; background-position: center;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.35);
+    }
+    .rec-match-tag {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 10px; font-weight: 700; color: var(--success);
+      background: rgba(76,175,130,0.12); border: 1px solid rgba(76,175,130,0.3);
+      padding: 3px 8px; border-radius: 20px; margin-top: 4px;
+    }
     #platforms { padding: 80px 0; }
     .platforms-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
     .platform-chips { display: flex; flex-wrap: wrap; gap: 10px; }
@@ -566,6 +600,7 @@
     <div class="nav-links">
       <a href="#features" class="nav-link">Features</a>
       <a href="#gamification" class="nav-link">Gamification</a>
+      <a href="#recommendations" class="nav-link">Recommendations</a>
       <a href="#platforms" class="nav-link">Platforms</a>
       <a href="#faq" class="nav-link">FAQ</a>
       <a href="#privacy" class="nav-link">Privacy</a>
@@ -795,7 +830,7 @@
         <div>
           <div class="section-label">Gamification</div>
           <h2 class="section-title">Watching more has never been this addictive.</h2>
-          <p class="section-subtitle" style="margin-bottom:28px">An XP, level and medal system designed to reward your love for movies and shows.</p>
+          <p class="section-subtitle" style="margin-bottom:28px">An XP, level and 7-tier medal system designed to reward your love for movies and shows — from your very first watch to hundreds of hours logged.</p>
 
           <div class="xp-preview">
             <div class="xp-preview-title">Your current progress</div>
@@ -808,38 +843,102 @@
           </div>
         </div>
 
-        <div class="gami-tiers">
-          <div class="tier-card">
-            <div class="tier-icon" style="background:rgba(180,180,190,0.1)">🥈</div>
-            <div class="tier-info">
-              <div class="tier-name">Silver medals</div>
-              <div class="tier-desc">Steady-progress achievements. Track genres, directors and decades.</div>
-            </div>
-            <div class="tier-badge" style="background:rgba(180,180,190,0.12);color:#B4B4BE">Silver</div>
+        <div class="medal-grid">
+          <div class="medal-card">
+            <div class="medal-icon" style="background:rgba(205,127,50,0.14)">🥉</div>
+            <div class="medal-name" style="color:#CD9B6A">Bronze</div>
+            <div class="medal-desc">Your first steps — first watch, first favorite, first pending title.</div>
           </div>
-          <div class="tier-card">
-            <div class="tier-icon" style="background:rgba(255,184,48,0.1)">🥇</div>
-            <div class="tier-info">
-              <div class="tier-name">Gold medals</div>
-              <div class="tier-desc">For the dedicated. Volume milestones, long streaks and collections.</div>
-            </div>
-            <div class="tier-badge" style="background:rgba(255,184,48,0.12);color:#FFB830">Gold</div>
+          <div class="medal-card">
+            <div class="medal-icon" style="background:rgba(180,180,190,0.14)">🥈</div>
+            <div class="medal-name" style="color:#B4B4BE">Silver</div>
+            <div class="medal-desc">Steady progress. Genres, directors and decades explored.</div>
           </div>
-          <div class="tier-card">
-            <div class="tier-icon" style="background:rgba(156,143,255,0.1)">💎</div>
-            <div class="tier-info">
-              <div class="tier-name">Platinum medals</div>
-              <div class="tier-desc">Extremely rare. Require months of consistent use and deep exploration.</div>
-            </div>
-            <div class="tier-badge" style="background:rgba(156,143,255,0.12);color:#9C8FFF">Platinum</div>
+          <div class="medal-card">
+            <div class="medal-icon" style="background:rgba(255,184,48,0.14)">🥇</div>
+            <div class="medal-name" style="color:#FFB830">Gold</div>
+            <div class="medal-desc">For the dedicated. Volume milestones and long streaks.</div>
           </div>
-          <div class="tier-card">
-            <div class="tier-icon" style="background:rgba(255,107,107,0.1)">🔐</div>
-            <div class="tier-info">
-              <div class="tier-name">Secret achievements</div>
-              <div class="tier-desc">You won't know they exist until you unlock them. Only the curious find them.</div>
+          <div class="medal-card">
+            <div class="medal-icon" style="background:rgba(74,158,255,0.14)">🔷</div>
+            <div class="medal-name" style="color:#4A9EFF">Platinum</div>
+            <div class="medal-desc">Serious commitment — hundreds of titles and deep exploration.</div>
+          </div>
+          <div class="medal-card">
+            <div class="medal-icon" style="background:rgba(156,143,255,0.14)">💎</div>
+            <div class="medal-name" style="color:#9C8FFF">Diamond</div>
+            <div class="medal-desc">Extremely rare. Months of consistent, dedicated use.</div>
+          </div>
+          <div class="medal-card">
+            <div class="medal-icon" style="background:rgba(255,159,28,0.14)">👑</div>
+            <div class="medal-name" style="color:#FF9F1C">Legendary</div>
+            <div class="medal-desc">The top of the ranks. Reserved for the most obsessive cinephiles.</div>
+          </div>
+          <div class="medal-card">
+            <div class="medal-icon" style="background:rgba(255,107,107,0.14)">🔐</div>
+            <div class="medal-name" style="color:#FF6B6B">Secret</div>
+            <div class="medal-desc">Hidden achievements. You won't know they exist until you unlock them.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Recommendations engine -->
+  <section id="recommendations">
+    <div class="container">
+      <div class="rec-inner">
+        <div>
+          <div class="section-label">Recommendation engine</div>
+          <h2 class="section-title">Discover your next favorite, not just what's trending.</h2>
+          <p class="section-subtitle" style="margin-bottom:28px">Generic "trending now" lists show everyone the same thing. StreamDex builds a taste profile from what <em>you</em> actually watch and rate, then finds titles that genuinely match it — surfacing hidden gems you'd never have found on your own.</p>
+
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div class="tier-card">
+              <div class="tier-icon" style="background:rgba(108,99,255,0.1);font-size:14px">1</div>
+              <div class="tier-info">
+                <div class="tier-name">Builds your taste profile</div>
+                <div class="tier-desc">Learns from your watched, favorite and highly-rated titles — genres, directors, cast and decades included.</div>
+              </div>
             </div>
-            <div class="tier-badge" style="background:rgba(255,107,107,0.12);color:#FF6B6B">Secret</div>
+            <div class="tier-card">
+              <div class="tier-icon" style="background:rgba(108,99,255,0.1);font-size:14px">2</div>
+              <div class="tier-info">
+                <div class="tier-name">Calculates real similarity</div>
+                <div class="tier-desc">A multi-factor similarity engine compares candidates against your profile, not just a single shared genre tag.</div>
+              </div>
+            </div>
+            <div class="tier-card">
+              <div class="tier-icon" style="background:rgba(108,99,255,0.1);font-size:14px">3</div>
+              <div class="tier-info">
+                <div class="tier-name">Surfaces it contextually</div>
+                <div class="tier-desc">"Recommended for you" and "Because you were watching…" rows explain exactly why a title showed up.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="rec-row-preview">
+          <div class="rec-row-title">RECOMMENDED FOR YOU</div>
+          <div class="rec-poster-row">
+            <div>
+              <div class="rec-poster" style="background-image:url('https://www.themoviedb.org/t/p/w1280/nmmOKeydeeO4TKucpvyMA2o6gdD.jpg')"></div>
+              <div class="rec-match-tag"><i class="fas fa-star"></i> 96% match</div>
+            </div>
+            <div>
+              <div class="rec-poster" style="background-image:url('https://www.themoviedb.org/t/p/w1280/nmmOKeydeeO4TKucpvyMA2o6gdD.jpg')"></div>
+              <div class="rec-match-tag"><i class="fas fa-star"></i> 91% match</div>
+            </div>
+            <div>
+              <div class="rec-poster" style="background-image:url('https://www.themoviedb.org/t/p/w1280/nmmOKeydeeO4TKucpvyMA2o6gdD.jpg')"></div>
+              <div class="rec-match-tag"><i class="fas fa-star"></i> 88% match</div>
+            </div>
+          </div>
+          <div class="rec-row-title">BECAUSE YOU WERE WATCHING SILO</div>
+          <div class="rec-poster-row">
+            <div class="rec-poster" style="background-image:url('https://www.themoviedb.org/t/p/w1280/nmmOKeydeeO4TKucpvyMA2o6gdD.jpg')"></div>
+            <div class="rec-poster" style="background-image:url('https://www.themoviedb.org/t/p/w1280/nmmOKeydeeO4TKucpvyMA2o6gdD.jpg')"></div>
+            <div class="rec-poster" style="background-image:url('https://www.themoviedb.org/t/p/w1280/nmmOKeydeeO4TKucpvyMA2o6gdD.jpg')"></div>
           </div>
         </div>
       </div>
@@ -1059,6 +1158,7 @@
     <div class="footer-links">
       <a href="#features">Features</a>
       <a href="#gamification">Gamification</a>
+      <a href="#recommendations">Recommendations</a>
       <a href="#platforms">Platforms</a>
       <a href="#faq">FAQ</a>
       <a href="#privacy">Privacy Policy</a>

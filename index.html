@@ -420,7 +420,18 @@
 
     /* ── Recommendations engine ────────────────── */
     #recommendations { padding: 80px 0; }
-    .rec-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+    .rec-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+    
+    @media (max-width: 960px) {
+      .rec-inner {
+        grid-template-columns: 1fr;
+      }
+    }
     .rec-row-preview {
       background: var(--surface); border: 1px solid var(--border);
       border-radius: 20px; padding: 22px;

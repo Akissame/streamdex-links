@@ -13,20 +13,6 @@
   <meta property="og:image" content="https://streamdex.akissame.com.co/og-image.png">
   <meta property="og:url" content="https://streamdex.akissame.com.co">
 
-  <script>
-    (function() {
-      var r = sessionStorage.getItem('sdx_redirect');
-      if (!r) return;
-      sessionStorage.removeItem('sdx_redirect');
-      var path = new URL(r).pathname;
-      window.location.href = 'streamdex:/' + path;
-      setTimeout(function() {
-        var el = document.getElementById('cta-download');
-        if (el) el.style.display = 'flex';
-      }, 2000);
-    })();
-  </script>
-
   <style>
     *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 
@@ -639,6 +625,14 @@
             StreamDex is your personal streaming diary. Track what you watch, discover where it's available, earn XP and collect achievements — without paying anything, ever.
           </p>
           <div class="hero-cta" id="cta-download">
+            <!-- FIX: link real hacia el esquema custom, oculto hasta que
+                 sepamos que venimos de un deep link (ver script al final
+                 del body). Un <a href> real = gesto de usuario genuino,
+                 así Chrome no lo trata como redirect sospechoso de script
+                 ni congela el render de la página. -->
+            <a href="#" id="open-app-link" class="btn-primary" style="display:none">
+              <i class="fas fa-arrow-up-right-from-square"></i> Open in StreamDex app
+            </a>
             <a href="https://play.google.com/store/apps/details?id=com.akissame.streamdex" class="btn-primary">
               <i class="fab fa-google-play"></i> Google Play
             </a>
@@ -1185,6 +1179,25 @@
   </footer>
 
   <script>
+    /* Deep link relay (viene de 404.html tras un enlace tipo /movie/53216)
+       FIX: ya NO se dispara window.location.href automáticamente aquí.
+       Solo se prepara el href real del botón "Open in StreamDex app" y
+       se muestra — la navegación al esquema custom ocurre únicamente
+       cuando el usuario hace clic (gesto real), evitando tanto el banner
+       de confirmación de Chrome como el congelamiento del render. */
+    (function() {
+      var r = sessionStorage.getItem('sdx_redirect');
+      if (!r) return;
+      sessionStorage.removeItem('sdx_redirect');
+
+      var path = new URL(r).pathname;
+      var openLink = document.getElementById('open-app-link');
+      if (openLink) {
+        openLink.href = 'streamdex:/' + path;
+        openLink.style.display = 'inline-flex';
+      }
+    })();
+
     /* Stars */
     const starsEl = document.getElementById('stars');
     for (let i = 0; i < 90; i++) {

@@ -1184,18 +1184,25 @@
        Solo se prepara el href real del botón "Open in StreamDex app" y
        se muestra — la navegación al esquema custom ocurre únicamente
        cuando el usuario hace clic (gesto real), evitando tanto el banner
-       de confirmación de Chrome como el congelamiento del render. */
-    (function() {
-      var r = sessionStorage.getItem('sdx_redirect');
-      if (!r) return;
-      sessionStorage.removeItem('sdx_redirect');
+       de confirmación de Chrome como el congelamiento del render.
 
-      var path = new URL(r).pathname;
+       FIX 2: se lee de un query param (?sdx_redirect=...) en vez de
+       sessionStorage — más robusto y fácil de verificar a simple vista
+       en la barra de direcciones, sin depender de APIs de storage que
+       pueden fallar según el navegador/modo. */
+    (function() {
+      var params = new URLSearchParams(window.location.search);
+      var path = params.get('sdx_redirect');
+      if (!path) return;
+
       var openLink = document.getElementById('open-app-link');
       if (openLink) {
         openLink.href = 'streamdex:/' + path;
         openLink.style.display = 'inline-flex';
       }
+
+      // Limpia el query param de la barra de direcciones sin recargar
+      history.replaceState(null, '', '/');
     })();
 
     /* Stars */

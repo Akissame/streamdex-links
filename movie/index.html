@@ -56,49 +56,51 @@
       margin-top: 32px;
     }
   </style>
-  <script>
-    // Intentar abrir la app al cargar
-    window.addEventListener('load', function() {
-      const path = window.location.pathname;
-      const deepLink = 'streamdex:/' + path;
-      
-      // Intentar abrir la app
-      window.location.href = deepLink;
-      
-      // Si después de 2s sigue aquí, mostrar opciones de descarga
-      setTimeout(function() {
-        document.getElementById('download-section').style.display = 'block';
-      }, 2000);
-    });
-  </script>
 </head>
 <body>
   <div class="card">
     <div class="logo">Stream<span>Dex</span></div>
     <p class="subtitle">Tu índice personal del mundo del streaming</p>
-    
-    <div id="download-section" style="display:none">
+
+    <!-- FIX: visible desde el inicio, sin display:none ni timeout de 2s.
+         Ya no dependemos de que el auto-redirect "falle" para mostrarlo. -->
+    <div id="download-section">
       <p style="color:#8E8EA0; margin-bottom:24px; font-size:14px;">
         Descarga StreamDex para ver este contenido
       </p>
-      <a href="https://play.google.com/store/apps/details?id=com.akissame.streamdex" 
+      <a href="https://play.google.com/store/apps/details?id=com.akissame.streamdex"
          class="btn">
         Google Play
       </a>
-      <a href="https://apps.apple.com/app/streamdex/idXXXXXXXX" 
+      <a href="https://apps.apple.com/app/streamdex/idXXXXXXXX"
          class="btn">
         App Store
       </a>
     </div>
-    
+
+    <!-- FIX: href real apuntando al esquema custom, sin onclick +
+         location.href. Un <a href> normal es un gesto de usuario directo,
+         así Chrome no lo trata como navegación de script y no congela
+         el render de la página ni fuerza el banner de confirmación
+         en la mayoría de los casos. -->
     <p class="open-app">
-      ¿Ya tienes la app? 
-      <a href="javascript:void(0)" 
-         onclick="window.location.href='streamdex:/'+window.location.pathname"
+      ¿Ya tienes la app?
+      <a id="open-app-link" href="#"
          style="color:#6C63FF; text-decoration:none;">
         Abrir en StreamDex
       </a>
     </p>
   </div>
+
+  <script>
+    // FIX: ya NO se dispara la navegación automáticamente en 'load'.
+    // Solo se prepara el href real del enlace; la navegación ocurre
+    // únicamente cuando el usuario hace clic (gesto real de usuario).
+    document.addEventListener('DOMContentLoaded', function () {
+      var path = window.location.pathname;
+      var deepLink = 'streamdex:/' + path;
+      document.getElementById('open-app-link').href = deepLink;
+    });
+  </script>
 </body>
 </html>

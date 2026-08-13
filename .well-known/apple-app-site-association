@@ -5,7 +5,8 @@
       "appIDs": ["4RPBX3EAA6.com.akissame.streamdex"],
       "components": [
         { "/": "/movie/*" },
-        { "/": "/tv/*" }
+        { "/": "/tv/*" },
+        { "/": "/person/*" }
       ]
     }]
   }

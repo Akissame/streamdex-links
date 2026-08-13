@@ -4,13 +4,9 @@
   <meta charset="UTF-8">
   <title>StreamDex</title>
   <script>
-    // FIX: en vez de sessionStorage (frágil: falla en modo incógnito,
-    // con particionamiento de storage, o simplemente es difícil de
-    // depurar sin DevTools), pasamos la ruta original como query param.
-    // Esto es visible directamente en la URL y no depende de ninguna
-    // API de almacenamiento del navegador.
-    var path = encodeURIComponent(window.location.pathname);
-    window.location.replace('/?sdx_redirect=' + path);
+    // Guardar la URL completa antes de redirigir
+    sessionStorage.setItem('sdx_redirect', window.location.href);
+    window.location.replace('/');
   </script>
 </head>
 <body></body>

@@ -202,9 +202,7 @@
        * No tiene sentido mostrar una Store móvil automáticamente.
        */
       if (platform === "other") {
-        showStatus(
-          "Abre este enlace desde un dispositivo Android o iPhone."
-        );
+        window.location.replace("https://streamdex.akissame.com.co");
         return;
       }
 
@@ -249,7 +247,7 @@
         if (!appOpened && !document.hidden) {
           redirectToStore(platform);
         }
-      }, 1800);
+      }, 300);
     }
 
     window.addEventListener("load", openStreamDex);

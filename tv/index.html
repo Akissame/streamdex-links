@@ -57,14 +57,43 @@
     }
   </style>
   <script>
+    // FIX: detección de plataforma para mostrar solo la tienda relevante.
+    // No toca el intento de abrir la app (streamdex://) que ya confirmaste
+    // que funciona cuando el usuario sí tiene la app instalada.
+    function detectPlatform() {
+      const ua = navigator.userAgent || navigator.vendor || '';
+      if (/android/i.test(ua)) return 'android';
+      if (/iPad|iPhone|iPod/.test(ua) && !window.MSStream) return 'ios';
+      return 'other';
+    }
+
+    function applyStoreVisibility() {
+      const platform = detectPlatform();
+      const playBtn = document.getElementById('btn-play-store');
+      const appleBtn = document.getElementById('btn-app-store');
+      const genericMsg = document.getElementById('generic-download-msg');
+
+      if (platform === 'android') {
+        if (appleBtn) appleBtn.style.display = 'none';
+      } else if (platform === 'ios') {
+        if (playBtn) playBtn.style.display = 'none';
+      } else {
+        // Desktop u otro: mostramos ambos botones, pero con un mensaje
+        // explicando que es para instalar en el celular.
+        if (genericMsg) genericMsg.style.display = 'block';
+      }
+    }
+
     // Intentar abrir la app al cargar
     window.addEventListener('load', function() {
+      applyStoreVisibility();
+
       const path = window.location.pathname;
       const deepLink = 'streamdex:/' + path;
-      
+
       // Intentar abrir la app
       window.location.href = deepLink;
-      
+
       // Si después de 2s sigue aquí, mostrar opciones de descarga
       setTimeout(function() {
         document.getElementById('download-section').style.display = 'block';
@@ -78,14 +107,19 @@
     <p class="subtitle">Tu índice personal del mundo del streaming</p>
     
     <div id="download-section" style="display:none">
-      <p style="color:#8E8EA0; margin-bottom:24px; font-size:14px;">
+      <p style="color:#8E8EA0; margin-bottom:8px; font-size:14px;">
         Descarga StreamDex para ver este contenido
       </p>
-      <a href="https://play.google.com/store/apps/details?id=com.akissame.streamdex" 
+      <p id="generic-download-msg" style="display:none; color:#4A4A5E; margin-bottom:16px; font-size:13px;">
+        Ábrelo desde tu celular para instalar la app
+      </p>
+      <a id="btn-play-store"
+         href="https://play.google.com/store/apps/details?id=com.akissame.streamdex" 
          class="btn">
         Google Play
       </a>
-      <a href="https://apps.apple.com/app/streamdex/idXXXXXXXX" 
+      <a id="btn-app-store"
+         href="https://apps.apple.com/app/streamdex/idXXXXXXXX" 
          class="btn">
         App Store
       </a>

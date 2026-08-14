@@ -4,14 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>StreamDex</title>
-
   <style>
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
-
     body {
       background: #0A0A0F;
       color: #F0F0F5;
@@ -21,30 +19,25 @@
       align-items: center;
       justify-content: center;
     }
-
     .card {
       text-align: center;
       padding: 40px 32px;
       max-width: 380px;
       width: 100%;
     }
-
     .logo {
       font-size: 32px;
       font-weight: 800;
       margin-bottom: 8px;
     }
-
     .logo span {
       color: #6C63FF;
     }
-
     .subtitle {
       color: #8E8EA0;
       font-size: 15px;
       margin-bottom: 28px;
     }
-
     .loader {
       width: 22px;
       height: 22px;
@@ -54,19 +47,16 @@
       border-radius: 50%;
       animation: spin 0.8s linear infinite;
     }
-
     @keyframes spin {
       to {
         transform: rotate(360deg);
       }
     }
-
     .status {
       color: #8E8EA0;
       font-size: 14px;
       line-height: 1.5;
     }
-
     .fallback {
       display: none;
       margin-top: 20px;
@@ -75,73 +65,44 @@
       line-height: 1.5;
     }
   </style>
-
   <script>
     /*
-     * StreamDex - Smart Redirect
+     * StreamDex - Smart Redirect (actualizado)
      *
-     * Flujo:
-     *
-     * 1. Detecta Android / iOS / escritorio.
-     * 2. En móvil intenta abrir:
-     *      streamdex:/<ruta-original>
-     * 3. Si la aplicación no abre, redirige automáticamente
-     *    a la Store correspondiente.
-     *
-     * IMPORTANTE:
-     * No se modifica la URL original antes de intentar el deep link.
-     * Esto permite que enlaces como:
-     *
-     *   /tv/12345
-     *   /movie/67890
-     *
-     * lleguen correctamente a StreamDex.
+     * 1. Detecta plataforma.
+     * 2. En móvil intenta abrir streamdex:/<ruta>
+     * 3. Si no se abre la app → redirige a la Store nativa:
+     *    - Android → market:// (abre la app de Play Store)
+     *    - iOS     → itms-apps:// (abre la app de App Store)
      */
 
-    const PLAY_STORE_URL =
-      "https://play.google.com/store/apps/details?id=com.akissame.streamdex";
+    const PACKAGE_NAME = "com.akissame.streamdex";
 
-    /*
-     * Sustituir XXXXXXXX por el ID real de StreamDex en App Store
-     * cuando la aplicación iOS esté publicada.
-     */
-    const APP_STORE_URL =
-      "https://apps.apple.com/app/streamdex/idXXXXXXXX";
+    // URL web de respaldo (por si market:// no está disponible)
+    const PLAY_STORE_WEB =
+      "https://play.google.com/store/apps/details?id=" + PACKAGE_NAME;
+
+    // ⚠️ Sustituye XXXXXXXX por el ID real de App Store cuando esté publicada
+    const APP_STORE_ID = "XXXXXXXX";
+    const APP_STORE_WEB =
+      "https://apps.apple.com/app/streamdex/id" + APP_STORE_ID;
 
     function detectPlatform() {
       const ua = navigator.userAgent || navigator.vendor || "";
+      if (/android/i.test(ua)) return "android";
 
-      if (/android/i.test(ua)) {
-        return "android";
-      }
-
-      /*
-       * Incluye iPhone/iPad/iPod y también iPadOS que puede identificarse
-       * como Macintosh cuando navigator.maxTouchPoints > 1.
-       */
+      // iPhone / iPad / iPod + iPadOS disfrazado de Mac
       if (
         /iPhone|iPad|iPod/i.test(ua) ||
-        (
-          navigator.platform === "MacIntel" &&
-          navigator.maxTouchPoints > 1
-        )
+        (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)
       ) {
         return "ios";
       }
-
       return "other";
     }
 
     function getOriginalPath() {
-      /*
-       * Conservamos pathname + query string.
-       *
-       * Ejemplo:
-       * https://dominio.com/tv/123?season=2
-       *
-       * devuelve:
-       * /tv/123?season=2
-       */
+      // Conservamos pathname + query string
       return window.location.pathname + window.location.search;
     }
 
@@ -153,39 +114,39 @@
       const loader = document.getElementById("loader");
       const status = document.getElementById("status");
       const fallback = document.getElementById("fallback");
-
-      if (loader) {
-        loader.style.display = "none";
-      }
-
-      if (status) {
-        status.textContent = message;
-      }
-
-      if (fallback) {
-        fallback.style.display = "block";
-      }
+      if (loader) loader.style.display = "none";
+      if (status) status.textContent = message;
+      if (fallback) fallback.style.display = "block";
     }
 
     function redirectToStore(platform) {
       if (platform === "android") {
-        window.location.replace(PLAY_STORE_URL);
+        // market:// abre la aplicación de Google Play (no el navegador)
+        window.location.replace(
+          "market://details?id=" + PACKAGE_NAME
+        );
+        // Fallback de seguridad por si market:// no responde
+        setTimeout(function () {
+          window.location.replace(PLAY_STORE_WEB);
+        }, 800);
         return;
       }
 
       if (platform === "ios") {
-        /*
-         * Mientras no exista el ID real de App Store, no enviamos
-         * al usuario a una URL inválida.
-         */
-        if (!APP_STORE_URL.includes("idXXXXXXXX")) {
-          window.location.replace(APP_STORE_URL);
+        if (APP_STORE_ID === "XXXXXXXX") {
+          showStatus(
+            "StreamDex para iPhone aún no tiene una Store configurada."
+          );
           return;
         }
-
-        showStatus(
-          "StreamDex para iPhone aún no tiene una Store configurada."
+        // itms-apps:// abre la aplicación de App Store
+        window.location.replace(
+          "itms-apps://apps.apple.com/app/id" + APP_STORE_ID
         );
+        // Fallback de seguridad
+        setTimeout(function () {
+          window.location.replace(APP_STORE_WEB);
+        }, 800);
         return;
       }
 
@@ -197,79 +158,61 @@
     function openStreamDex() {
       const platform = detectPlatform();
 
-      /*
-       * En escritorio no intentamos ejecutar el esquema personalizado.
-       * No tiene sentido mostrar una Store móvil automáticamente.
-       */
+      // Escritorio → redirige al sitio web
       if (platform === "other") {
         window.location.replace("https://streamdex.akissame.com.co");
         return;
       }
 
       const deepLink = getDeepLink();
-
       let appOpened = false;
 
-      /*
-       * Si el navegador abandona esta página porque abrió la aplicación,
-       * evitamos ejecutar el fallback hacia la Store.
-       */
-      const markAppOpened = function() {
+      const markAppOpened = function () {
         appOpened = true;
       };
 
+      // Detectamos si la página se ocultó (señal de que la app se abrió)
       document.addEventListener(
         "visibilitychange",
-        function() {
-          if (document.hidden) {
-            markAppOpened();
-          }
+        function () {
+          if (document.hidden) markAppOpened();
         },
         { once: true }
       );
+      window.addEventListener("pagehide", markAppOpened, { once: true });
+      window.addEventListener("blur", markAppOpened, { once: true });
 
-      window.addEventListener(
-        "pagehide",
-        markAppOpened,
-        { once: true }
-      );
-
-      /*
-       * Intentar abrir StreamDex conservando la ruta.
-       */
+      // Intentamos abrir StreamDex inmediatamente
       window.location.href = deepLink;
 
-      /*
-       * Si seguimos visibles después de este tiempo, asumimos que
-       * la aplicación no está instalada.
-       */
-      setTimeout(function() {
+      // Si después de ~1.2 s seguimos visibles → asumimos que no está instalada
+      setTimeout(function () {
         if (!appOpened && !document.hidden) {
           redirectToStore(platform);
         }
-      }, 5);
+      }, 1200);
     }
 
-    window.addEventListener("load", openStreamDex);
+    // Lanzamos en cuanto el DOM esté listo (más rápido que "load")
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", openStreamDex);
+    } else {
+      openStreamDex();
+    }
   </script>
 </head>
-
 <body>
   <div class="card">
     <div class="logo">
       Stream<span>Dex</span>
     </div>
-
     <p class="subtitle">
       Tu índice personal del mundo del streaming
     </p>
-
     <div id="loader" class="loader"></div>
-
     <p id="status" class="status">
       Abriendo StreamDex…
     </p>
-
     <p id="fallback" class="fallback">
       Si no se abre automáticamente, comprueba que estás utilizando
       un dispositivo compatible.

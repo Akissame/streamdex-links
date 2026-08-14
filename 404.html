@@ -128,7 +128,7 @@
         // Fallback de seguridad por si market:// no responde
         setTimeout(function () {
           window.location.replace(PLAY_STORE_WEB);
-        }, 800);
+        }, 5);
         return;
       }
 
@@ -146,7 +146,7 @@
         // Fallback de seguridad
         setTimeout(function () {
           window.location.replace(APP_STORE_WEB);
-        }, 800);
+        }, 5);
         return;
       }
 
@@ -190,7 +190,7 @@
         if (!appOpened && !document.hidden) {
           redirectToStore(platform);
         }
-      }, 1200);
+      }, 5);
     }
 
     // Lanzamos en cuanto el DOM esté listo (más rápido que "load")

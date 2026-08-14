@@ -48,9 +48,7 @@
       animation: spin 0.8s linear infinite;
     }
     @keyframes spin {
-      to {
-        transform: rotate(360deg);
-      }
+      to { transform: rotate(360deg); }
     }
     .status {
       color: #8E8EA0;
@@ -67,31 +65,22 @@
   </style>
   <script>
     /*
-     * StreamDex - Smart Redirect (actualizado)
+     * StreamDex - Smart Redirect (sin timeout en Android)
      *
-     * 1. Detecta plataforma.
-     * 2. En móvil intenta abrir streamdex:/<ruta>
-     * 3. Si no se abre la app → redirige a la Store nativa:
-     *    - Android → market:// (abre la app de Play Store)
-     *    - iOS     → itms-apps:// (abre la app de App Store)
+     * Android  → Intent URL nativo de Chrome
+     *            - App instalada  → abre StreamDex con la ruta
+     *            - App no instalada → abre la app de Play Store
+     *
+     * iOS      → esquema personalizado + fallback a App Store
+     * Desktop  → página principal
      */
 
     const PACKAGE_NAME = "com.akissame.streamdex";
-
-    // URL web de respaldo (por si market:// no está disponible)
-    const PLAY_STORE_WEB =
-      "https://play.google.com/store/apps/details?id=" + PACKAGE_NAME;
-
-    // ⚠️ Sustituye XXXXXXXX por el ID real de App Store cuando esté publicada
-    const APP_STORE_ID = "XXXXXXXX";
-    const APP_STORE_WEB =
-      "https://apps.apple.com/app/streamdex/id" + APP_STORE_ID;
+    const APP_STORE_ID = "XXXXXXXX"; // ← sustituir cuando exista
 
     function detectPlatform() {
       const ua = navigator.userAgent || navigator.vendor || "";
       if (/android/i.test(ua)) return "android";
-
-      // iPhone / iPad / iPod + iPadOS disfrazado de Mac
       if (
         /iPhone|iPad|iPod/i.test(ua) ||
         (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)
@@ -102,12 +91,8 @@
     }
 
     function getOriginalPath() {
-      // Conservamos pathname + query string
+      // Conservamos pathname + query (ej: /tv/123?season=2)
       return window.location.pathname + window.location.search;
-    }
-
-    function getDeepLink() {
-      return "streamdex:/" + getOriginalPath();
     }
 
     function showStatus(message) {
@@ -119,81 +104,69 @@
       if (fallback) fallback.style.display = "block";
     }
 
-    function redirectToStore(platform) {
-      if (platform === "android") {
-        // market:// abre la aplicación de Google Play (no el navegador)
-        window.location.replace(
-          "market://details?id=" + PACKAGE_NAME
-        );
-        // Fallback de seguridad por si market:// no responde
-        setTimeout(function () {
-          window.location.replace(PLAY_STORE_WEB);
-        }, 5);
-        return;
-      }
-
-      if (platform === "ios") {
-        if (APP_STORE_ID === "XXXXXXXX") {
-          showStatus(
-            "StreamDex para iPhone aún no tiene una Store configurada."
-          );
-          return;
-        }
-        // itms-apps:// abre la aplicación de App Store
-        window.location.replace(
-          "itms-apps://apps.apple.com/app/id" + APP_STORE_ID
-        );
-        // Fallback de seguridad
-        setTimeout(function () {
-          window.location.replace(APP_STORE_WEB);
-        }, 5);
-        return;
-      }
-
-      showStatus(
-        "Abre este enlace desde tu celular para continuar en StreamDex."
-      );
-    }
-
     function openStreamDex() {
       const platform = detectPlatform();
+      const path = getOriginalPath(); // ej: /tv/12345
 
-      // Escritorio → redirige al sitio web
+      // ——— Escritorio ———
       if (platform === "other") {
         window.location.replace("https://streamdex.akissame.com.co");
         return;
       }
 
-      const deepLink = getDeepLink();
-      let appOpened = false;
+      // ——— Android (solución principal) ———
+      if (platform === "android") {
+        /*
+         * Intent URL oficial de Chrome:
+         * - scheme = streamdex
+         * - package = com.akissame.streamdex
+         * - Si la app existe → la abre con la ruta
+         * - Si no existe → usa el fallback
+         *
+         * Usamos market:// como fallback para forzar la app de Play Store
+         * en lugar del navegador.
+         */
+        const fallback = encodeURIComponent(
+          "market://details?id=" + PACKAGE_NAME
+        );
 
-      const markAppOpened = function () {
-        appOpened = true;
-      };
+        const intentUrl =
+          "intent://" +
+          path.replace(/^\//, "") +          // quitamos la / inicial
+          "#Intent;" +
+          "scheme=streamdex;" +
+          "package=" + PACKAGE_NAME + ";" +
+          "S.browser_fallback_url=" + fallback + ";" +
+          "end";
 
-      // Detectamos si la página se ocultó (señal de que la app se abrió)
-      document.addEventListener(
-        "visibilitychange",
-        function () {
-          if (document.hidden) markAppOpened();
-        },
-        { once: true }
-      );
-      window.addEventListener("pagehide", markAppOpened, { once: true });
-      window.addEventListener("blur", markAppOpened, { once: true });
+        window.location.replace(intentUrl);
+        return;
+      }
 
-      // Intentamos abrir StreamDex inmediatamente
-      window.location.href = deepLink;
+      // ——— iOS ———
+      if (platform === "ios") {
+        const deepLink = "streamdex:/" + path;
 
-      // Si después de ~1.2 s seguimos visibles → asumimos que no está instalada
-      setTimeout(function () {
-        if (!appOpened && !document.hidden) {
-          redirectToStore(platform);
-        }
-      }, 5);
+        // Intentamos abrir la app
+        window.location.href = deepLink;
+
+        // Fallback corto solo para iOS (necesario porque no existe Intent nativo)
+        setTimeout(function () {
+          if (document.hidden || document.webkitHidden) return; // la app se abrió
+
+          if (APP_STORE_ID === "XXXXXXXX") {
+            showStatus("StreamDex para iPhone aún no tiene una Store configurada.");
+            return;
+          }
+          // itms-apps:// abre la aplicación de App Store
+          window.location.replace(
+            "itms-apps://apps.apple.com/app/id" + APP_STORE_ID
+          );
+        }, 1500);
+      }
     }
 
-    // Lanzamos en cuanto el DOM esté listo (más rápido que "load")
+    // Ejecutar lo antes posible
     if (document.readyState === "loading") {
       document.addEventListener("DOMContentLoaded", openStreamDex);
     } else {

@@ -9,7 +9,7 @@
   <script>
     (function () {
       const PACKAGE_NAME = "com.akissame.streamdex";
-      const APP_STORE_ID = "6801656425"; // ← cambiar cuando exista
+      const APP_STORE_ID = "6801656425"; // ID real de App Store Connect
       const MAIN_SITE = "https://streamdex.akissame.com.co";
 
       const ua = navigator.userAgent || navigator.vendor || "";
@@ -47,10 +47,12 @@
       if (isIOS) {
         location.href = "streamdex:/" + path;
 
-        // Solo iOS necesita un pequeño fallback
+        // FIX: se eliminó el guard "if (APP_STORE_ID === '6801656425') return;"
+        // que bloqueaba el fallback — ese ID YA es el real de App Store
+        // Connect (confirmado: apps.apple.com/.../id6801656425), así que
+        // el guard estaba cancelando el fallback aunque el ID fuera correcto.
         setTimeout(function () {
           if (document.hidden || document.webkitHidden) return;
-          if (APP_STORE_ID === "6801656425") return;
           location.replace("itms-apps://apps.apple.com/app/id" + APP_STORE_ID);
         }, 1200);
       }

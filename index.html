@@ -13,20 +13,6 @@
   <meta property="og:image" content="https://streamdex.akissame.com.co/og-image.png">
   <meta property="og:url" content="https://streamdex.akissame.com.co">
 
-  <script>
-    (function() {
-      var r = sessionStorage.getItem('sdx_redirect');
-      if (!r) return;
-      sessionStorage.removeItem('sdx_redirect');
-      var path = new URL(r).pathname;
-      window.location.href = 'streamdex:/' + path;
-      setTimeout(function() {
-        var el = document.getElementById('cta-download');
-        if (el) el.style.display = 'flex';
-      }, 2000);
-    })();
-  </script>
-
   <style>
     *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 
@@ -642,8 +628,8 @@
             <a href="https://play.google.com/store/apps/details?id=com.akissame.streamdex" class="btn-primary">
               <i class="fab fa-google-play"></i> Google Play
             </a>
-            <a href="https://apps.apple.com/app/streamdex/idXXXXXXXX" class="btn-secondary">
-              <i class="fab fa-apple"></i> App Store — Coming soon
+            <a href="https://apps.apple.com/us/app/streamdex-streaming-index/id6801656425" class="btn-secondary">
+              <i class="fab fa-apple"></i> App Store
             </a>
           </div>
           <div class="hero-trust">
@@ -1073,7 +1059,7 @@
         </div>
         <div class="faq-item">
           <div class="faq-q">Is it available on iOS? <i class="fas fa-chevron-right"></i></div>
-          <div class="faq-a">StreamDex is currently on Android. The iOS version is in development and coming soon to the App Store.</div>
+          <div class="faq-a">StreamDex is available on both Android and iOS — download it free from Google Play or the App Store.</div>
         </div>
         <div class="faq-item">
           <div class="faq-q">How do I report a bug or suggest a feature? <i class="fas fa-chevron-right"></i></div>
@@ -1158,9 +1144,9 @@
             <i class="fab fa-google-play" style="color:#34A853"></i>
             <div class="store-btn-label"><small>Available on</small><strong>Google Play</strong></div>
           </a>
-          <a href="https://apps.apple.com/app/streamdex/idXXXXXXXX" class="store-btn apple" target="_blank">
+          <a href="https://apps.apple.com/us/app/streamdex-streaming-index/id6801656425" class="store-btn apple" target="_blank">
             <i class="fab fa-apple"></i>
-            <div class="store-btn-label"><small>Coming soon to</small><strong>App Store</strong></div>
+            <div class="store-btn-label"><small>Available on</small><strong>App Store</strong></div>
           </a>
         </div>
       </div>

@@ -72,33 +72,46 @@
     .container { max-width: 1120px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 10; }
     section { position: relative; z-index: 10; }
 
-    /* ── Nav ──────────────────────────────────── */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      padding: 16px 24px;
-      display: flex; align-items: center; justify-content: space-between;
-      background: rgba(10,10,15,0.8);
-      backdrop-filter: blur(20px);
+    /* ── Navigation: aligned with Akissame product pages ── */
+    .sdx-nav {
+      position: sticky; top: 0; z-index: 100;
+      width: 100%; min-height: 72px; padding: 0 24px;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(10, 10, 15, .84);
+      backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
       border-bottom: 1px solid var(--border);
-      transition: background 0.3s;
     }
-    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-    .nav-logo-name { font-size: 20px; font-weight: 900; color: var(--text); letter-spacing: -0.5px; }
-    .nav-logo-name span { color: var(--primary); }
-    .nav-links { display: flex; gap: 6px; align-items: center; }
-    .nav-link {
-      padding: 8px 16px; border-radius: 20px;
-      text-decoration: none; font-size: 14px; font-weight: 500;
-      color: var(--text-sub); transition: all 0.2s; border: 1px solid transparent;
+    .sdx-nav-inner {
+      width: min(100%, 1160px); min-height: 72px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between; gap: 24px;
     }
-    .nav-link:hover { color: var(--text); background: rgba(255,255,255,0.05); }
-    .nav-link.cta {
-      background: var(--primary); color: #fff; font-weight: 700;
+    .sdx-brand {
+      display: inline-flex; align-items: center; gap: 11px; flex: 0 0 auto;
+      color: var(--text); text-decoration: none;
+      font: 700 17px 'Inter', sans-serif; white-space: nowrap;
     }
-    .nav-link.cta:hover { background: var(--primary-dark); transform: translateY(-1px); }
+    .sdx-brand img { width: 34px; height: 34px; object-fit: contain; }
+    .sdx-brand span { color: var(--text-sub); font-size: 12px; font-weight: 500; margin-left: 4px; }
+    .sdx-nav-links { display: flex; align-items: center; justify-content: flex-end; gap: 18px; }
+    .sdx-nav-links a {
+      color: var(--text-sub); text-decoration: none; white-space: nowrap;
+      font-size: 13px; font-weight: 600; transition: color .2s, background .2s, border-color .2s;
+    }
+    .sdx-nav-links a:hover { color: #fff; }
+    .sdx-nav-links .sdx-nav-cta {
+      padding: 9px 15px; border-radius: 10px;
+      color: #fff; background: var(--primary); font-weight: 700;
+    }
+    .sdx-nav-links .sdx-nav-cta:hover { color: #fff; background: var(--primary-dark); }
+    .sdx-menu-button {
+      display: none; align-items: center; justify-content: center;
+      border: 1px solid var(--border); background: var(--surface); color: var(--text);
+      border-radius: 10px; padding: 9px 13px; font: 600 13px 'Inter', sans-serif;
+      cursor: pointer;
+    }
 
     /* ── Hero ──────────────────────────────────── */
-    .hero { min-height: 100vh; display: flex; align-items: center; padding: 100px 0 60px; }
+    .hero { min-height: calc(100vh - 72px); display: flex; align-items: center; padding: 28px 0 60px; }
     .hero-inner {
       display: grid; grid-template-columns: 1fr 1fr;
       gap: 60px; align-items: center;
@@ -401,7 +414,7 @@
     .xp-level { font-size: 28px; font-weight: 900; color: var(--primary); }
     .xp-pts { font-size: 13px; color: var(--text-muted); }
     .xp-track { height: 8px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden; margin-bottom: 8px; }
-    .xp-fill { height: 100%; border-radius: 4px; background: var(--primary); width: 64%; }
+    .xp-fill { height: 100%; border-radius: 4px; background: var(--primary); width: 92.54%; }
     .xp-label { font-size: 12px; color: var(--text-muted); }
 
     /* ── Recommendations engine ────────────────── */
@@ -468,99 +481,102 @@
     .sharing-title { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
     .sharing-desc { font-size: 13px; color: var(--text-sub); line-height: 1.6; }
 
-    /* ── FAQ ──────────────────────────────────── */
-    #faq { padding: 80px 0; }
-    .faq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-    .faq-item {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 16px; padding: 22px; cursor: pointer; transition: all 0.25s;
+    /* ── FAQ: collapsible layout aligned with the updated Akissame pages ── */
+    #faq { padding: 84px 0; }
+    .faq-layout { display: grid; grid-template-columns: .78fr 1.22fr; gap: 48px; align-items: start; }
+    .faq-intro { max-width: 390px; }
+    .faq-intro .section-label { margin-bottom: 12px; }
+    .faq-intro .section-title { margin-bottom: 14px; }
+    .faq-intro .section-subtitle { margin: 0 0 24px; }
+    .faq-note {
+      padding: 18px 20px; border-left: 3px solid var(--accent-gold);
+      border-radius: 0 12px 12px 0; background: rgba(255,184,48,.07);
+      color: var(--text-sub); font-size: 12.5px; line-height: 1.7;
     }
-    .faq-item:hover { border-color: var(--border-accent); background: var(--surface-el); }
-    .faq-q {
-      font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 10px;
-      display: flex; justify-content: space-between; align-items: flex-start; gap: 10px;
+    .faq-note strong { color: var(--text); }
+    .faq-list { display: grid; gap: 10px; }
+    .faq-list details {
+      border: 1px solid var(--border); border-radius: 13px;
+      background: rgba(19,19,26,.82); transition: border-color .2s, background .2s;
     }
-    .faq-q i { color: var(--primary-light); font-size: 11px; flex-shrink: 0; margin-top: 2px; }
-    .faq-a { font-size: 13px; color: var(--text-sub); line-height: 1.65; }
+    .faq-list details:hover, .faq-list details[open] {
+      border-color: var(--border-accent); background: var(--surface-el);
+    }
+    .faq-list summary {
+      position: relative; cursor: pointer; list-style: none;
+      padding: 17px 48px 17px 19px; color: var(--text);
+      font-size: 14px; font-weight: 700; line-height: 1.5;
+    }
+    .faq-list summary::-webkit-details-marker { display: none; }
+    .faq-list summary::after {
+      content: "+"; position: absolute; right: 19px; top: 50%;
+      transform: translateY(-50%); color: var(--accent-gold);
+      font-size: 20px; font-weight: 400; line-height: 1;
+    }
+    .faq-list details[open] summary::after { content: "−"; }
+    .faq-list summary:focus-visible {
+      outline: 2px solid var(--primary-light); outline-offset: 3px; border-radius: 10px;
+    }
+    .faq-answer {
+      padding: 0 19px 18px; color: var(--text-sub);
+      font-size: 13px; line-height: 1.75;
+    }
+    .faq-answer a { color: var(--primary-light); text-decoration: none; }
+    .faq-answer a:hover { text-decoration: underline; }
 
-    /* ── Privacy Policy ───────────────────────── */
-    #privacy { padding: 80px 0; }
-    .privacy-card {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 24px; padding: 44px;
+    /* ── Privacy Policy: concise, collapsible legal details ── */
+    #privacy { padding: 84px 0; }
+    .privacy-layout { display: grid; grid-template-columns: .78fr 1.22fr; gap: 48px; align-items: start; }
+    .privacy-intro { max-width: 390px; }
+    .privacy-intro .section-label { margin-bottom: 12px; }
+    .privacy-intro .section-title { margin-bottom: 14px; }
+    .privacy-intro .section-subtitle { margin: 0 0 24px; }
+    .privacy-updated { font-size: 12px; color: var(--text-muted); margin-top: 18px; display: inline-flex; align-items: center; gap: 7px; }
+    .privacy-list { display: grid; gap: 10px; }
+    .privacy-list details {
+      border: 1px solid var(--border); border-radius: 13px;
+      background: rgba(19,19,26,.82); transition: border-color .2s, background .2s;
     }
-    .privacy-updated {
-      font-size: 12px; color: var(--text-muted); margin-bottom: 32px;
-      display: inline-flex; align-items: center; gap: 6px;
+    .privacy-list details:hover, .privacy-list details[open] {
+      border-color: var(--border-accent); background: var(--surface-el);
     }
-    .privacy-block { margin-bottom: 28px; }
-    .privacy-block:last-child { margin-bottom: 0; }
-    .privacy-block h3 {
-      font-size: 15px; font-weight: 700; color: var(--text);
-      margin-bottom: 10px; display: flex; align-items: center; gap: 9px;
+    .privacy-list summary {
+      position: relative; cursor: pointer; list-style: none;
+      padding: 17px 48px 17px 19px; color: var(--text);
+      font-size: 14px; font-weight: 700; line-height: 1.5;
     }
-    .privacy-block h3 i { color: var(--primary-light); font-size: 13px; }
-    .privacy-block p, .privacy-block li {
-      font-size: 13.5px; line-height: 1.75; color: var(--text-sub);
+    .privacy-list summary::-webkit-details-marker { display: none; }
+    .privacy-list summary::after {
+      content: "+"; position: absolute; right: 19px; top: 50%;
+      transform: translateY(-50%); color: var(--accent-gold);
+      font-size: 20px; font-weight: 400; line-height: 1;
     }
-    .privacy-block ul { padding-left: 20px; margin-top: 6px; }
-    .privacy-block li { margin-bottom: 4px; }
-    .privacy-block strong { color: var(--text); font-weight: 600; }
-    .privacy-block a { color: var(--primary-light); text-decoration: none; }
-    .privacy-block a:hover { text-decoration: underline; }
+    .privacy-list details[open] summary::after { content: "−"; }
+    .privacy-list summary:focus-visible {
+      outline: 2px solid var(--primary-light); outline-offset: 3px; border-radius: 10px;
+    }
+    .privacy-answer { padding: 0 19px 18px; color: var(--text-sub); font-size: 13px; line-height: 1.75; }
+    .privacy-answer p + p { margin-top: 9px; }
+    .privacy-answer ul { padding-left: 20px; margin-top: 6px; }
+    .privacy-answer li { margin-bottom: 4px; }
+    .privacy-answer strong { color: var(--text); font-weight: 600; }
+    .privacy-answer a { color: var(--primary-light); text-decoration: none; }
+    .privacy-answer a:hover { text-decoration: underline; }
 
-    /* ── Download CTA ────────────────────────── */
-    #download { padding: 80px 0; text-align: center; }
-    .download-inner {
-      background: linear-gradient(135deg, rgba(108,99,255,0.18), rgba(255,107,107,0.06));
-      border: 1px solid rgba(108,99,255,0.3);
-      border-radius: 28px; padding: 60px 48px; position: relative; overflow: hidden;
-    }
-    .download-inner::before {
-      content: ''; position: absolute; top: -60%; left: -20%; width: 140%; height: 200%;
-      background: radial-gradient(ellipse at center, rgba(108,99,255,0.12) 0%, transparent 60%);
-      pointer-events: none;
-    }
-    .download-badge {
-      display: inline-flex; align-items: center; gap: 6px;
-      padding: 5px 14px; border-radius: 20px;
-      background: rgba(76,175,130,0.15); border: 1px solid rgba(76,175,130,0.3);
-      font-size: 12px; font-weight: 700; color: var(--success); margin-bottom: 20px;
-      position: relative;
-    }
-    .download-title {
-      font-size: clamp(28px, 4vw, 44px); font-weight: 900; letter-spacing: -1.5px;
-      color: var(--text); margin-bottom: 14px; position: relative;
-    }
-    .download-subtitle { font-size: 16px; color: var(--text-sub); margin-bottom: 36px; position: relative; }
-    .download-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; position: relative; }
-
-    .store-btn {
-      display: inline-flex; align-items: center; gap: 12px;
-      padding: 14px 26px; border-radius: 14px;
-      text-decoration: none; font-size: 14px; font-weight: 700; transition: all 0.25s;
-    }
-    .store-btn.google { background: #fff; color: #111; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
-    .store-btn.google:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.4); }
-    .store-btn.apple { background: #1a1a1a; color: #fff; border: 1px solid rgba(255,255,255,0.1); }
-    .store-btn.apple:hover { background: #222; transform: translateY(-2px); }
-    .store-btn i { font-size: 22px; }
-    .store-btn-label { text-align: left; line-height: 1.3; }
-    .store-btn-label small { display: block; font-size: 10px; font-weight: 400; opacity: 0.65; }
-    .store-btn-label strong { font-size: 15px; }
-
-    /* ── Footer ──────────────────────────────── */
-    footer {
-      border-top: 1px solid var(--border); padding: 40px 24px; text-align: center;
+    /* ── Footer: compact shared Akissame layout ── */
+    .sdx-footer {
       position: relative; z-index: 10;
+      border-top: 1px solid var(--border); padding: 26px 24px;
+      color: var(--text-muted); font-size: 12px;
     }
-    .footer-logo { font-size: 20px; font-weight: 900; letter-spacing: -0.5px; margin-bottom: 8px; }
-    .footer-logo span { color: var(--primary); }
-    .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; font-style: italic; }
-    .footer-links { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-bottom: 16px; }
-    .footer-links a { font-size: 13px; color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
-    .footer-links a:hover { color: var(--text-sub); }
-    .footer-copy { font-size: 12px; color: var(--text-muted); }
+    .sdx-footer-inner {
+      width: min(100%, 1160px); margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between; gap: 20px;
+    }
+    .sdx-footer-copy { margin: 0; }
+    .sdx-footer-links { display: flex; flex-wrap: wrap; align-items: center; gap: 18px; }
+    .sdx-footer-links a { color: var(--text-muted); text-decoration: none; transition: color .2s; }
+    .sdx-footer-links a:hover { color: var(--text); }
 
     /* ── Responsive ──────────────────────────── */
     @media (max-width: 960px) {
@@ -572,17 +588,34 @@
       .features-grid { grid-template-columns: repeat(2, 1fr); }
       .gami-inner, .platforms-inner { grid-template-columns: 1fr; }
       .sharing-grid { grid-template-columns: 1fr; }
-      .faq-grid { grid-template-columns: 1fr; }
+      .faq-layout { grid-template-columns: 1fr; gap: 24px; }
+      .faq-intro { max-width: 620px; }
       .stats-grid { grid-template-columns: repeat(2, 1fr); }
       .stats-grid .stat-item:nth-child(2) { border-right: none; }
       .phone-wrap { width: 240px; }
-      .privacy-card { padding: 30px 22px; }
+      .privacy-layout { grid-template-columns: 1fr; gap: 24px; }
+      .privacy-intro { max-width: 620px; }
+    }
+    @media (max-width: 900px) {
+      .sdx-nav { padding: 0 20px; }
+      .sdx-menu-button { display: inline-flex; }
+      .sdx-nav-links {
+        display: none; position: absolute; top: 72px; left: 0; right: 0;
+        padding: 12px 24px 18px; flex-direction: column; align-items: stretch; gap: 0;
+        background: rgba(10, 10, 15, .98); border-bottom: 1px solid var(--border);
+      }
+      .sdx-nav-links.is-open { display: flex; }
+      .sdx-nav-links a { padding: 12px 4px; }
+      .sdx-nav-links .sdx-nav-cta { margin-top: 8px; text-align: center; }
     }
     @media (max-width: 640px) {
-      nav { padding: 12px 16px; }
-      .nav-links .nav-link:not(.cta) { display: none; }
+      .sdx-nav, .sdx-nav-inner { min-height: 64px; }
+      .hero { min-height: calc(100vh - 64px); }
+      .sdx-nav-links { top: 64px; padding-left: 20px; padding-right: 20px; }
+      .sdx-brand span { display: none; }
+      .sdx-footer-inner { align-items: flex-start; flex-direction: column; gap: 14px; }
+      .sdx-footer-links { gap: 14px 18px; }
       .features-grid { grid-template-columns: 1fr; }
-      .download-inner { padding: 36px 20px; }
       .container { padding: 0 16px; }
     }
   </style>
@@ -592,21 +625,24 @@
   <div class="bg-grid"></div>
   <div class="bg-stars" id="stars"></div>
 
-  <!-- Nav -->
-  <nav id="navbar">
-    <a href="#" class="nav-logo">
-      <span class="nav-logo-name">Stream<span>Dex</span></span>
-    </a>
-    <div class="nav-links">
-      <a href="#features" class="nav-link">Features</a>
-      <a href="#gamification" class="nav-link">Gamification</a>
-      <a href="#recommendations" class="nav-link">Recommendations</a>
-      <a href="#platforms" class="nav-link">Platforms</a>
-      <a href="#faq" class="nav-link">FAQ</a>
-      <a href="#privacy" class="nav-link">Privacy</a>
-      <a href="#download" class="nav-link cta">Download free</a>
+  <!-- Shared Akissame product navigation -->
+  <header class="sdx-nav" id="navbar">
+    <div class="sdx-nav-inner">
+      <a class="sdx-brand" href="https://akissame.com.co/" aria-label="Akissame home">
+        <img src="./assets/akissame_logo.png" alt="" width="34" height="34">
+        <strong>Akissame</strong>
+      </a>
+      <button class="sdx-menu-button" type="button" aria-expanded="false" aria-controls="sdx-navigation">Menu</button>
+      <nav class="sdx-nav-links" id="sdx-navigation" aria-label="Main navigation">
+        <a href="#features">Features</a>
+        <a href="#gamification">Gamification</a>
+        <a href="#recommendations">Discover</a>
+        <a href="#platforms">Platforms</a>
+        <a href="#faq">FAQ</a>
+        <a href="#privacy">Privacy</a>
+      </nav>
     </div>
-  </nav>
+  </header>
 
   <!-- Hero -->
   <section class="hero">
@@ -615,14 +651,14 @@
         <div class="hero-text">
           <div class="hero-eyebrow">
             <div class="dot"></div>
-            100% Free · No subscriptions
+            Free to use · No account required
           </div>
           <h1 class="hero-title">
             Every story<br>you've watched,<br>
             <span class="accent">indexed.</span>
           </h1>
           <p class="hero-subtitle">
-            StreamDex is your personal streaming diary. Track what you watch, discover where it's available, earn XP and collect achievements — without paying anything, ever.
+            A personal space for everything you watch. Build your movie and series library, keep track of every episode, discover where titles are available and follow your progress — all in one place.
           </p>
           <div class="hero-cta" id="cta-download">
             <a href="https://play.google.com/store/apps/details?id=com.akissame.streamdex" class="btn-primary">
@@ -771,53 +807,53 @@
       <div class="section-header">
         <div class="section-label">Features</div>
         <h2 class="section-title">Everything you need.<br>Nothing you don't.</h2>
-        <p class="section-subtitle">Built for people who watch seriously and want to know everything about their viewing habits.</p>
+        <p class="section-subtitle">From your watchlist to your viewing history, StreamDex brings the details together so you can spend less time keeping track and more time deciding what to watch next.</p>
       </div>
       <div class="features-grid">
         <div class="feature-card">
           <div class="feature-icon" style="background:rgba(108,99,255,0.12);color:#9C8FFF"><i class="fas fa-check-circle"></i></div>
           <div class="feature-title">Complete tracking</div>
-          <div class="feature-desc">Watched, in progress, pending and rewatch. Track individual episodes with timestamps and notes.</div>
+          <div class="feature-desc">Keep movies and series organized by status, track episodes individually and record rewatches as your viewing history grows.</div>
         </div>
         <div class="feature-card">
           <div class="feature-icon" style="background:rgba(255,184,48,0.12);color:#FFB830"><i class="fas fa-trophy"></i></div>
           <div class="feature-title">Real gamification</div>
-          <div class="feature-desc">XP for every title watched, levels, over 100 achievements by category and daily streaks to keep the pace.</div>
+          <div class="feature-desc">Earn XP as you log what you watch, progress through levels and unlock achievements across different categories.</div>
         </div>
         <div class="feature-card">
           <div class="feature-icon" style="background:rgba(74,158,255,0.12);color:#4A9EFF"><i class="fas fa-tv"></i></div>
-          <div class="feature-title">Real-time platforms</div>
-          <div class="feature-desc">Know exactly which streaming platform has each title available in your region.</div>
+          <div class="feature-title">Regional availability</div>
+          <div class="feature-desc">Check the streaming services listed for a title in your selected country. Availability can vary by region and change over time.</div>
         </div>
         <div class="feature-card">
           <div class="feature-icon" style="background:rgba(76,175,130,0.12);color:#4CAF82"><i class="fas fa-chart-bar"></i></div>
           <div class="feature-title">Detailed statistics</div>
-          <div class="feature-desc">Favorite genres, most-watched directors, total time consumed, preferred decades and 20+ metrics.</div>
+          <div class="feature-desc">Explore your viewing habits through genres, directors, decades, watch time and other personal statistics.</div>
         </div>
         <div class="feature-card">
           <div class="feature-icon" style="background:rgba(255,107,107,0.12);color:#FF6B6B"><i class="fas fa-bell"></i></div>
           <div class="feature-title">Local notifications</div>
-          <div class="feature-desc">Find out when your pending titles release and when new episodes drop — no internet, no account needed.</div>
+          <div class="feature-desc">Get on-device reminders for upcoming releases and new episodes. Release information needs to be refreshed when you have an internet connection.</div>
         </div>
         <div class="feature-card">
           <div class="feature-icon" style="background:rgba(108,99,255,0.12);color:#9C8FFF"><i class="fas fa-share-nodes"></i></div>
           <div class="feature-title">Exportable profile</div>
-          <div class="feature-desc">Export your full history to a .sdx file and share it with friends. View other users' profiles.</div>
+          <div class="feature-desc">Create a .sdx export of your profile and choose when to share it. Import another profile to explore its viewing history and statistics.</div>
         </div>
         <div class="feature-card">
           <div class="feature-icon" style="background:rgba(255,184,48,0.12);color:#FFB830"><i class="fas fa-magnifying-glass"></i></div>
           <div class="feature-title">Universal search</div>
-          <div class="feature-desc">Search movies, shows and people in a single query. Filters by content type with real-time counters.</div>
+          <div class="feature-desc">Find movies, series and people from one search, then narrow the results by content type.</div>
         </div>
         <div class="feature-card">
           <div class="feature-icon" style="background:rgba(76,175,130,0.12);color:#4CAF82"><i class="fas fa-repeat"></i></div>
           <div class="feature-title">Rewatch counter</div>
-          <div class="feature-desc">Watched it four times? We know. Keeps an exact count of how many times you revisited each title or episode.</div>
+          <div class="feature-desc">Keep track of repeat viewings, whether you revisit a movie or watch an episode again.</div>
         </div>
         <div class="feature-card">
           <div class="feature-icon" style="background:rgba(74,158,255,0.12);color:#4A9EFF"><i class="fas fa-globe"></i></div>
           <div class="feature-title">Multi-region & language</div>
-          <div class="feature-desc">TMDB data in the language you prefer. Switch region to see availability and releases for your country.</div>
+          <div class="feature-desc">Choose your preferred language and country to tailor catalogue information, release details and streaming availability.</div>
         </div>
       </div>
     </div>
@@ -830,16 +866,16 @@
         <div>
           <div class="section-label">Gamification</div>
           <h2 class="section-title">Watching more has never been this addictive.</h2>
-          <p class="section-subtitle" style="margin-bottom:28px">An XP, level and 7-tier medal system designed to reward your love for movies and shows — from your very first watch to hundreds of hours logged.</p>
+          <p class="section-subtitle" style="margin-bottom:28px">Log your viewing, earn experience and work your way through levels and medal tiers. Your profile becomes a record of the time and stories you have enjoyed.</p>
 
           <div class="xp-preview">
-            <div class="xp-preview-title">Your current progress</div>
+            <div class="xp-preview-title">Example progress</div>
             <div class="xp-row">
-              <div class="xp-level">Level 12</div>
-              <div class="xp-pts">640 / 1000 XP</div>
+              <div class="xp-level">Level 21</div>
+              <div class="xp-pts">11667 / 12600 XP</div>
             </div>
             <div class="xp-track"><div class="xp-fill"></div></div>
-            <div class="xp-label">Rank: <strong style="color:var(--primary-light)">Veteran</strong> · 64 achievements unlocked</div>
+            <div class="xp-label">Rank: <strong style="color:var(--primary-light)">Veteran</strong> · 48 achievements unlocked</div>
           </div>
         </div>
 
@@ -897,10 +933,10 @@
         </h2>
 
         <p class="section-subtitle" style="margin-bottom:0">
-          Generic "trending now" lists show everyone the same thing.
-          StreamDex builds a taste profile from what you actually watch
-          and rate, then finds titles that genuinely match it —
-          surfacing hidden gems you'd never have found on your own.
+          Your viewing history and ratings help shape a taste profile.
+          StreamDex uses that profile to suggest movies and series that may
+          fit your interests, giving you another way to explore beyond
+          the titles already on your watchlist.
         </p>
       </div>
 
@@ -924,8 +960,8 @@
           <div class="tier-info">
             <div class="tier-name">Calculates real similarity</div>
             <div class="tier-desc">
-              A multi-factor similarity engine compares candidates against
-              your profile, not just a single shared genre tag.
+              Recommendations consider several signals from your profile,
+              rather than relying on a single genre match.
             </div>
           </div>
         </div>
@@ -936,8 +972,8 @@
           <div class="tier-info">
             <div class="tier-name">Surfaces it contextually</div>
             <div class="tier-desc">
-              "Recommended for you" and "Because you were watching…"
-              rows explain exactly why a title showed up.
+              Personalized rows help you discover titles related to
+              the genres, people and stories you already enjoy.
             </div>
           </div>
         </div>
@@ -954,7 +990,7 @@
         <div>
           <div class="section-label">Platforms</div>
           <h2 class="section-title">You'll always know where to watch it.</h2>
-          <p class="section-subtitle" style="margin-bottom:28px">Data kept up to date by TMDB for your region. StreamDex shows exactly which service has each title available right now.</p>
+          <p class="section-subtitle" style="margin-bottom:28px">Streaming availability is provided through TMDB and depends on the country selected in your settings. Check a title to see the services currently listed for that region; catalogues may change.</p>
           <div class="platform-chips">
             <div class="platform-chip"><div class="dot" style="background:#E50914"></div>Netflix</div>
             <div class="platform-chip"><div class="dot" style="background:#00A8E1"></div>Max</div>
@@ -987,8 +1023,8 @@
             <div class="tier-card">
               <div class="tier-icon" style="background:rgba(108,99,255,0.1);font-size:14px">3</div>
               <div class="tier-info">
-                <div class="tier-name">Always fresh data</div>
-                <div class="tier-desc">TMDB updates availability continuously. No stale cache.</div>
+                <div class="tier-name">Availability can change</div>
+                <div class="tier-desc">Availability comes from TMDB and may change as services update their catalogues.</div>
               </div>
             </div>
           </div>
@@ -1003,23 +1039,23 @@
       <div class="section-header" style="text-align:center">
         <div class="section-label">Profile & community</div>
         <h2 class="section-title">Your history, your identity.</h2>
-        <p class="section-subtitle" style="margin:0 auto 52px">Share who you are as a viewer. Export, import and compare profiles with your friends.</p>
+        <p class="section-subtitle" style="margin:0 auto 52px">Your profile belongs to you. Export it when you want to keep a copy or share it, and import another .sdx profile to explore its stats and achievements.</p>
       </div>
       <div class="sharing-grid">
         <div class="sharing-card">
           <div class="sharing-icon" style="background:rgba(108,99,255,0.12);color:#9C8FFF"><i class="fas fa-file-export"></i></div>
           <div class="sharing-title">Export your profile</div>
-          <div class="sharing-desc">Generate a .sdx file with your full history, stats and achievements. Yours forever.</div>
+          <div class="sharing-desc">Create a portable .sdx file containing your profile information, viewing history and progress.</div>
         </div>
         <div class="sharing-card">
           <div class="sharing-icon" style="background:rgba(76,175,130,0.12);color:#4CAF82"><i class="fas fa-users"></i></div>
           <div class="sharing-title">See friends' profiles</div>
-          <div class="sharing-desc">Import anyone's .sdx and explore their stats, achievements and favorite genres.</div>
+          <div class="sharing-desc">Open a profile someone has shared with you and explore its statistics, achievements and favorite genres.</div>
         </div>
         <div class="sharing-card">
           <div class="sharing-icon" style="background:rgba(255,184,48,0.12);color:#FFB830"><i class="fas fa-chart-pie"></i></div>
           <div class="sharing-title">Unique insights</div>
-          <div class="sharing-desc">From your favorite director to the longest movie you've watched — discover patterns you didn't know about.</div>
+          <div class="sharing-desc">Explore details such as your most-watched directors, favorite genres and longest watched titles.</div>
         </div>
       </div>
     </div>
@@ -1028,42 +1064,49 @@
   <!-- FAQ -->
   <section id="faq">
     <div class="container">
-      <div class="section-header" style="text-align:center">
-        <div class="section-label">Frequently asked questions</div>
-        <h2 class="section-title">Everything you wanted to know.</h2>
-      </div>
-      <div class="faq-grid">
-        <div class="faq-item">
-          <div class="faq-q">Is it really completely free? <i class="fas fa-chevron-right"></i></div>
-          <div class="faq-a">Yes, no asterisks. StreamDex is free forever. There's no Premium plan, no subscription, no locked features.</div>
+      <div class="faq-layout">
+        <div class="faq-intro">
+          <div class="section-label">Good to know</div>
+          <h2 class="section-title">Questions, answered.</h2>
+          <p class="section-subtitle">A few details about how StreamDex works, how your information is handled and what you can do with your library.</p>
+          <div class="faq-note">
+            <strong>Need more detail?</strong> The privacy section below explains what stays on your device and which external services support StreamDex.
+          </div>
         </div>
-        <div class="faq-item">
-          <div class="faq-q">Do I need to create an account? <i class="fas fa-chevron-right"></i></div>
-          <div class="faq-a">No. Everything runs locally on your device. No sign-up, no email, no password. Just install and start.</div>
-        </div>
-        <div class="faq-item">
-          <div class="faq-q">How does the XP system work? <i class="fas fa-chevron-right"></i></div>
-          <div class="faq-a">You earn XP by marking movies as watched, completing seasons, logging rewatches and unlocking achievements. XP raises your level and unlocks new ranks.</div>
-        </div>
-        <div class="faq-item">
-          <div class="faq-q">Can I transfer my data to a new phone? <i class="fas fa-chevron-right"></i></div>
-          <div class="faq-a">Yes. Export your profile as a .sdx file from your profile and import it on your new device. No cloud, no server.</div>
-        </div>
-        <div class="faq-item">
-          <div class="faq-q">Do notifications work without internet? <i class="fas fa-chevron-right"></i></div>
-          <div class="faq-a">Yes. Premiere and new-episode notifications are 100% local. Data refreshes whenever you open the app with a connection.</div>
-        </div>
-        <div class="faq-item">
-          <div class="faq-q">What data does the app collect? <i class="fas fa-chevron-right"></i></div>
-          <div class="faq-a">None. Your watch history, statistics and achievements live only on your device. We don't send anything to any server.</div>
-        </div>
-        <div class="faq-item">
-          <div class="faq-q">Is it available on iOS? <i class="fas fa-chevron-right"></i></div>
-          <div class="faq-a">StreamDex is available on both Android and iOS — download it free from Google Play or the App Store.</div>
-        </div>
-        <div class="faq-item">
-          <div class="faq-q">How do I report a bug or suggest a feature? <i class="fas fa-chevron-right"></i></div>
-          <div class="faq-a">You can email us at streamdex@akissame.com.co or leave a review on Google Play. We read all feedback.</div>
+
+        <div class="faq-list">
+          <details>
+            <summary>Is StreamDex free?</summary>
+            <div class="faq-answer">Yes. StreamDex is free to download and use, with advertising in some areas of the app. There is no subscription required to maintain your library, track what you watch or use its core features.</div>
+          </details>
+          <details>
+            <summary>Do I need to create an account?</summary>
+            <div class="faq-answer">No. You can start using StreamDex without signing up or creating a password. Your library, watch history, ratings, achievements and statistics are stored locally on your device.</div>
+          </details>
+          <details>
+            <summary>Does StreamDex work without an internet connection?</summary>
+            <div class="faq-answer">Your saved library and locally stored profile remain on your device, so you can still access information already saved there. Searching the catalogue, refreshing title details and checking current streaming availability require an internet connection.</div>
+          </details>
+          <details>
+            <summary>How do XP, levels and achievements work?</summary>
+            <div class="faq-answer">You earn experience by tracking your viewing activity and completing in-app achievements. Your accumulated XP contributes to your level and rank, giving you another way to follow your progress as a viewer.</div>
+          </details>
+          <details>
+            <summary>Can I move my library to another device?</summary>
+            <div class="faq-answer">Yes. Export your profile from the app to create a <strong>.sdx</strong> file, then import that file on your other device. The export is initiated by you; StreamDex does not automatically upload your profile to a cloud account.</div>
+          </details>
+          <details>
+            <summary>How do premiere and new episode reminders work?</summary>
+            <div class="faq-answer">Notifications are scheduled locally on your device. StreamDex needs an internet connection to refresh release information; once the relevant data is available and notifications are configured, your device can deliver the scheduled reminders.</div>
+          </details>
+          <details>
+            <summary>Does StreamDex collect or share my personal data?</summary>
+            <div class="faq-answer">Your personal library and viewing activity are stored locally and are not uploaded to a StreamDex account or server. The app does make requests to TMDB for catalogue information, and advertising services may process technical data when ads are shown. Read the <a href="#privacy">privacy information</a> for the full explanation.</div>
+          </details>
+          <details>
+            <summary>Where can I get help or send feedback?</summary>
+            <div class="faq-answer">For questions, bug reports or suggestions, email <a href="mailto:streamdex@akissame.com.co">streamdex@akissame.com.co</a>. You can also leave feedback through the app's store listing.</div>
+          </details>
         </div>
       </div>
     </div>
@@ -1072,102 +1115,60 @@
   <!-- Privacy Policy -->
   <section id="privacy">
     <div class="container">
-      <div class="section-header" style="text-align:center">
-        <div class="section-label">Legal</div>
-        <h2 class="section-title">Privacy Policy</h2>
-        <p class="section-subtitle" style="margin:0 auto 0">How StreamDex handles your data — in short: it mostly doesn't, because it doesn't need to.</p>
-      </div>
-
-      <div class="privacy-card">
-        <div class="privacy-updated"><i class="fas fa-circle-info"></i> Last updated: January 2026</div>
-
-        <div class="privacy-block">
-          <h3><i class="fas fa-database"></i> Data we collect</h3>
-          <p>StreamDex is designed to work without accounts or servers of our own. Your watch history, ratings, achievements, XP, statistics and app preferences are stored <strong>locally on your device</strong> using an on-device database (Isar). We do not collect, transmit or store this information on any remote server operated by us.</p>
+      <div class="privacy-layout">
+        <div class="privacy-intro">
+          <div class="section-label">Legal</div>
+          <h2 class="section-title">Privacy, without the fine print.</h2>
+          <p class="section-subtitle">The essentials about information stored on your device and the external services StreamDex uses. Expand a topic to read the details.</p>
+          <div class="privacy-updated"><i class="fas fa-circle-info" aria-hidden="true"></i> Last updated: November 2026</div>
         </div>
 
-        <div class="privacy-block">
-          <h3><i class="fas fa-cloud"></i> Third-party services</h3>
-          <p>To provide movie and show information, StreamDex uses <strong>The Movie Database (TMDB) API</strong>. When you browse or search content, requests are sent to TMDB to retrieve titles, images, cast and availability data. This use is governed by TMDB's own <a href="https://www.themoviedb.org/privacy-policy" target="_blank">privacy policy</a>. StreamDex is not endorsed or certified by TMDB.</p>
-          <p style="margin-top:8px">If enabled, the app may also use Google AdMob to display ads and Google Play services for distribution. These providers may collect limited technical data (such as device identifiers) under their own privacy policies, independent of StreamDex.</p>
-        </div>
-
-        <div class="privacy-block">
-          <h3><i class="fas fa-bell"></i> Notifications</h3>
-          <p>Push notifications for upcoming premieres and new episodes are generated and scheduled entirely <strong>on your device</strong>. No notification content or personal data is sent through an external server.</p>
-        </div>
-
-        <div class="privacy-block">
-          <h3><i class="fas fa-file-export"></i> Profile export & sharing</h3>
-          <p>You may choose to export your profile as a <strong>.sdx file</strong> containing your library, stats and achievements. This file is created and shared directly by you (e.g. via messaging apps) — StreamDex never uploads it automatically, and we have no access to files you export or import.</p>
-        </div>
-
-        <div class="privacy-block">
-          <h3><i class="fas fa-user-shield"></i> Permissions</h3>
-          <ul>
-            <li><strong>Notifications</strong> — to alert you about premieres and new episodes.</li>
-            <li><strong>Storage / Photos</strong> — to save or share images from the app.</li>
-            <li><strong>Camera</strong> — only if you choose to set a custom profile photo.</li>
-          </ul>
-          <p style="margin-top:8px">None of these permissions are used to collect or transmit personal data off your device.</p>
-        </div>
-
-        <div class="privacy-block">
-          <h3><i class="fas fa-child"></i> Children's privacy</h3>
-          <p>StreamDex does not knowingly collect personal information from children, as the app does not collect personal information from anyone — all data stays on-device.</p>
-        </div>
-
-        <div class="privacy-block">
-          <h3><i class="fas fa-rotate"></i> Changes to this policy</h3>
-          <p>We may update this policy as the app evolves. Changes will be reflected on this page with an updated "last updated" date.</p>
-        </div>
-
-        <div class="privacy-block">
-          <h3><i class="fas fa-envelope"></i> Contact</h3>
-          <p>Questions about this policy? Reach out at <a href="mailto:streamdex@akissame.com.co">streamdex@akissame.com.co</a>.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Download CTA -->
-  <section id="download">
-    <div class="container">
-      <div class="download-inner">
-        <div class="download-badge">
-          <i class="fas fa-check-circle"></i> Free forever
-        </div>
-        <h2 class="download-title">Your streaming history is waiting.</h2>
-        <p class="download-subtitle">Download StreamDex for free. No subscriptions, no accounts, no limits.</p>
-        <div class="download-btns">
-          <a href="https://play.google.com/store/apps/details?id=com.akissame.streamdex" class="store-btn google" target="_blank">
-            <i class="fab fa-google-play" style="color:#34A853"></i>
-            <div class="store-btn-label"><small>Available on</small><strong>Google Play</strong></div>
-          </a>
-          <a href="https://apps.apple.com/us/app/streamdex-streaming-index/id6801656425" class="store-btn apple" target="_blank">
-            <i class="fab fa-apple"></i>
-            <div class="store-btn-label"><small>Available on</small><strong>App Store</strong></div>
-          </a>
+        <div class="privacy-list">
+          <details>
+            <summary>Data stored on your device</summary>
+            <div class="privacy-answer"><p>StreamDex works without an account or a server operated by us. Your watch history, ratings, achievements, XP, statistics and app preferences are stored <strong>locally on your device</strong> using the Isar database. We do not upload this personal library and profile information to a StreamDex account or server.</p></div>
+          </details>
+          <details>
+            <summary>Third-party services</summary>
+            <div class="privacy-answer"><p>StreamDex uses the <strong>The Movie Database (TMDB) API</strong> to retrieve catalogue information such as titles, images, cast and streaming availability. Requests are sent to TMDB when you browse or search. This use is governed by <a href="https://www.themoviedb.org/privacy-policy" target="_blank" rel="noopener noreferrer">TMDB's privacy policy</a>. StreamDex is not endorsed or certified by TMDB.</p><p>When advertising is enabled, Google AdMob may process limited technical information to provide ads, under its own privacy policy. Google Play and Apple's App Store also handle app distribution under their respective policies.</p></div>
+          </details>
+          <details>
+            <summary>Notifications</summary>
+            <div class="privacy-answer"><p>Premiere and new-episode reminders are generated and scheduled <strong>locally on your device</strong>. StreamDex uses refreshed release information to schedule them; notification content and your personal profile are not sent through a StreamDex notification server.</p></div>
+          </details>
+          <details>
+            <summary>Profile export and sharing</summary>
+            <div class="privacy-answer"><p>You can choose to export your profile as a <strong>.sdx file</strong> containing information such as your library, statistics and achievements. You decide when and where to share that file. StreamDex does not automatically upload exported profiles, and we do not receive a copy when you share one through another app.</p></div>
+          </details>
+          <details>
+            <summary>App permissions</summary>
+            <div class="privacy-answer"><ul><li><strong>Notifications:</strong> to alert you about premieres and new episodes.</li><li><strong>Photos or media access:</strong> for image-related actions you choose to perform, where supported by your device.</li><li><strong>Camera:</strong> only for optional features such as setting a custom profile photo, where available.</li></ul><p>Permissions are used to provide the corresponding features; they are not a mechanism for uploading your personal library to StreamDex servers.</p></div>
+          </details>
+          <details>
+            <summary>Children's privacy</summary>
+            <div class="privacy-answer"><p>StreamDex does not knowingly collect personal information from children. Core profile and viewing data are stored locally. Third-party services, including catalogue and advertising providers, remain subject to their own policies and age-related requirements.</p></div>
+          </details>
+          <details>
+            <summary>Changes to this policy</summary>
+            <div class="privacy-answer"><p>This policy may be updated as StreamDex evolves. Any changes will be reflected on this page together with a revised update date.</p></div>
+          </details>
+          <details>
+            <summary>Contact</summary>
+            <div class="privacy-answer"><p>For privacy questions or requests, contact <a href="mailto:streamdex@akissame.com.co">streamdex@akissame.com.co</a>.</p></div>
+          </details>
         </div>
       </div>
     </div>
   </section>
 
   <!-- Footer -->
-  <footer>
-    <div class="footer-logo">Stream<span>Dex</span></div>
-    <p class="footer-tagline">Your personal index of the streaming world.</p>
-    <div class="footer-links">
-      <a href="#features">Features</a>
-      <a href="#gamification">Gamification</a>
-      <a href="#recommendations">Recommendations</a>
-      <a href="#platforms">Platforms</a>
-      <a href="#faq">FAQ</a>
-      <a href="#privacy">Privacy Policy</a>
-      <a href="mailto:streamdex@akissame.com.co">Contact</a>
-      <a href="https://akissame.com.co">Akissame</a>
+  <footer class="sdx-footer">
+    <div class="sdx-footer-inner">
+      <p class="sdx-footer-copy">© 2020–<span id="sdx-year">2026</span> · Akissame. All rights reserved.</p>
+      <nav class="sdx-footer-links" aria-label="Footer navigation">
+        <a href="mailto:streamdex@akissame.com.co">Contact</a>
+      </nav>
     </div>
-    <p class="footer-copy">© 2026 Akissame — Steven Oliveros. All rights reserved.</p>
   </footer>
 
   <script>
@@ -1181,11 +1182,20 @@
       starsEl.appendChild(s);
     }
 
-    /* Nav scroll */
-    const nav = document.getElementById('navbar');
-    window.addEventListener('scroll', () => {
-      nav.style.background = window.scrollY > 40 ? 'rgba(10,10,15,0.95)' : 'rgba(10,10,15,0.8)';
+    /* Mobile navigation */
+    const menuButton = document.querySelector('.sdx-menu-button');
+    const navigation = document.getElementById('sdx-navigation');
+    menuButton?.addEventListener('click', () => {
+      const isOpen = navigation.classList.toggle('is-open');
+      menuButton.setAttribute('aria-expanded', String(isOpen));
     });
+    navigation?.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        navigation.classList.remove('is-open');
+        menuButton?.setAttribute('aria-expanded', 'false');
+      });
+    });
+    document.getElementById('sdx-year').textContent = new Date().getFullYear();
 
     /* Smooth scroll */
     document.querySelectorAll('a[href^="#"]').forEach(a => {

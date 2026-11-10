@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>StreamDex — Your streaming index</title>
+  <title>StreamDex — Your streaming index | Akissame</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
@@ -135,6 +135,21 @@
       line-height: 1.07; letter-spacing: -2px; margin-bottom: 20px;
     }
     .hero-title .accent { color: var(--primary); }
+
+    /* Official logo to the left of the hero title */
+    .hero-text { min-width: 0; }
+    .hero-headline { display: flex; align-items: center; gap: 18px; width: max-content; margin-bottom: 20px; }
+    .hero-headline .hero-title { margin-bottom: 0; white-space: nowrap; text-align: left; }
+    .hero-logo {
+      flex: none; width: clamp(96px, 11.25vw, 144px); height: auto; aspect-ratio: 1; object-fit: contain;
+      filter: drop-shadow(0 8px 22px rgba(108, 99, 255, .35));
+    }
+    @media (max-width: 960px) { .hero-headline { margin-left: auto; margin-right: auto; } }
+    @media (max-width: 540px) {
+      .hero-headline { flex-direction: column; gap: 14px; width: auto; }
+      .hero-headline .hero-title { white-space: normal; text-align: center; }
+      .hero-logo { width: 84px; }
+    }
 
     .hero-subtitle {
       font-size: 17px; line-height: 1.7; color: var(--text-sub);
@@ -653,10 +668,13 @@
             <div class="dot"></div>
             Free to use · No account required
           </div>
-          <h1 class="hero-title">
-            Every story<br>you've watched,<br>
-            <span class="accent">indexed.</span>
-          </h1>
+          <div class="hero-headline">
+            <img class="hero-logo" src="streamdex_logo.png" alt="StreamDex logo" width="144" height="144">
+            <h1 class="hero-title">
+              Every story<br>you've watched,<br>
+              <span class="accent">indexed.</span>
+            </h1>
+          </div>
           <p class="hero-subtitle">
             A personal space for everything you watch. Build your movie and series library, keep track of every episode, discover where titles are available and follow your progress — all in one place.
           </p>
